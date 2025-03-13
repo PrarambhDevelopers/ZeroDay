@@ -2,7 +2,7 @@
   import { OrbitControls, useGLTF } from "@react-three/drei";
   import { Suspense, useRef, useState, useEffect } from "react";
   import gsap from "gsap";
-
+  import MatrixBG from "./MatrixBG";
   function CyberSkull() {
     const { scene } = useGLTF("/models/cyber_skull.glb");
     const modelRef = useRef();
@@ -43,9 +43,9 @@
   function App() {
     return (
       <>
-        <div className="relative bg-[#161616] text-[--color-neon] h-screen w-full flex justify-center items-center px-10">
+        <div className="relative text-[--color-neon] h-screen w-full flex justify-center items-center px-10">
           {/* Glitch Text in Background */}
-          <h1 className="absolute top-[0%] text-[15rem] font-bold tracking-wide text-white opacity-50">
+          <h1 className="absolute top-[0%] text-[15rem] font-bold tracking-wide  text-[#50ff53]  opacity-100">
             ZERO DAY
           </h1>
 
@@ -58,8 +58,12 @@
             </Suspense>
             <OrbitControls />
           </Canvas>
+          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%" , zIndex: -1}}>
+          <MatrixBG />
+        </div>
         </div>
         <div className="h-[100vh] text-white">asdasd</div>
+      
       </>
     );
   }
