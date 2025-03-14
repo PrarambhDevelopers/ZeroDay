@@ -6,6 +6,9 @@ import MatrixBG from "./MatrixBG";
 import DayBreakdown from "./DayBreakdown";
 import WorkshopOverview from "./WorkshopOverview";
 import Footer from "./Footer";
+import CtfInfo from "./CtfInfo";
+import FAQ from "./FAQ";
+import Register from "./Register";
 function CyberSkull() {
   const { scene } = useGLTF("/models/cyber_skull.glb");
   const modelRef = useRef();
@@ -72,6 +75,9 @@ function App() {
       </div>
       <WorkshopOverview />
       <DayBreakdown />
+      <CtfInfo />
+      <FAQ/>
+      <Register/>
           <Footer />
     </>
   );
