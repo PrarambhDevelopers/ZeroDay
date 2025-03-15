@@ -10,6 +10,7 @@ function App() {
     <Router>
       <>
         <Routes>
+          <Route path="/" element={<LandingPage />} />
           <Route path="/home" element={<LandingPage />} />
           <Route path="/syregister" element={<SyForm status={"not_started"} />} />
           <Route path="/tyregister" element={<TyForm status={"not_started"} />} />
