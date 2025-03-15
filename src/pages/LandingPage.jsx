@@ -16,28 +16,21 @@ const CyberSkull = lazy(() => import("../components/CyberSkull"));
 import { Html, useProgress } from "@react-three/drei";
 
 function Loader() {
-  const { progress } = useProgress();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    document.body.style.overflow = "hidden"; // Disable scrolling
-    document.body.style.pointerEvents = "none"; // Disable interactions
-    document.documentElement.style.overflow = "hidden"; // Hide scrollbar
-
-    // Let them suffer for 3 seconds before letting them proceed 😈
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      document.body.style.overflow = "auto"; // Re-enable scrolling
-      document.body.style.pointerEvents = "auto"; // Re-enable interactions
-      document.documentElement.style.overflow = "auto"; // Restore scrollbar
-    }, 7000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!isLoading) return null; // Hide loader after timeout
-
-  return (
+    const { progress } = useProgress();
+  
+    useEffect(() => {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+      document.body.style.pointerEvents = "none"; // Disable interactions
+      document.documentElement.style.overflow = "hidden"; // Hide scrollbar
+  
+      return () => {
+        document.body.style.overflow = "auto"; // Re-enable scrolling
+        document.body.style.pointerEvents = "auto"; // Re-enable interactions
+        document.documentElement.style.overflow = "auto"; // Restore scrollbar
+      };
+    }, []);
+    
+    return (
     <Html center>
       <div className="flex flex-col justify-center items-center text-white z-20 w-screen h-screen px-4 py-2 rounded-lg relative">
         
@@ -52,25 +45,26 @@ function Loader() {
         </h1>
         
         {/* Sarcastic Message */}
-        <p className="text-md md:text-lg text-gray-400 mt-2 text-center max-w-[80%]">
+        <p className="text-md md:text-xl text-gray-400 mt-5 text-center  max-w-[80%]">
           Our website is so <span className="text-[#34c837] font-bold">insanely heavy</span> that even NASA's servers would sweat.  
         </p>
-        <p className="text-md md:text-lg text-gray-400 mt-2 text-center max-w-[80%]">
-        Sit back, relax, and let your device <span className="text-[#ff5050] font-bold">suffer</span> while it renders. 
-        </p>
+        <p className="text-md md:text-xl text-gray-400 mt-2 text-center max-w-[80%]">
 
-        <p className="text-sm text-gray-500 mt-4 text-center italic">
-          (Don't worry, just making you wait for fun. Let the crying begin...!!!)
+          Sit back, relax, and let your device <span className="text-[#34c837] font-bold">suffer</span> while it renders. 
         </p>
 
         {/* Background Animation */}
         <div className="absolute top-0 left-0 w-full h-full -z-10">
           <MatrixBG />
         </div>
+
       </div>
     </Html>
-  );
-}
+
+    );
+  }
+
+
 export default function LandingPage() {
   const isMobile = window.innerWidth <= 768;
 

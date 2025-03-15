@@ -124,7 +124,7 @@ function DayBreakdown() {
             {`DAY ${index + 1}`.split("").map((char, i) => (
               <span key={i}>{char}</span>
             ))}</p>
-               <p className="text-[#50ff53] text-4xl md:text-8xl font-bold flex flex-col items-center " >{`Day ${index+1}`} </p>
+               <p className="text-[#50ff53] text-4xl md:text-8xl font-bold flex flex-col items-center   md:hidden " >{`Day ${index+1}`} </p>
            { /* Image on the Top for Mobile, Left for Desktop */}
                   <div className="w-full md:w-1/3 flex justify-center mb-6 md:mb-0">
                     <img src={day.img} alt={day.title} className="w-28 h-28 md:w-80 md:h-80 object-contain floating" />
