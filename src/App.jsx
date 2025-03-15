@@ -1,18 +1,20 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-import RegistrationForm from "./pages/RegistrationForm";
-import Footer from "./components/Footer";
 
+import Footer from "./components/Footer";
+import TyForm from "./pages/TyForm";
+import SyForm from "./pages/SyForm";
 function App() {
-  const sylink ="https://forms.gle/eaA36YZaA3TJ4qB38";
-  const tylink ="https://forms.gle/eaA36YZaA3TJ4qB38";
+
   return (
     <Router>
       <>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/syregister" element={<RegistrationForm link={sylink} status={"not_started"} />} />
-          <Route path="/tyregister" element={<RegistrationForm link={tylink} status={"not_started"} />} />
+          <Route path="/home" element={<LandingPage />} />
+          <Route path="/syregister" element={<SyForm status={"not_started"} />} />
+          <Route path="/tyregister" element={<TyForm status={"not_started"} />} />
+          <Route path="*" element={<div>404 Page Not Found</div>} />
+       
         </Routes>
         <Footer />
       </>

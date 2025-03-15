@@ -10,7 +10,7 @@ import Footer from "../components/Footer";
 import CtfInfo from "../components/CtfInfo";
 import FAQ from "../components/FAQ";
 import Register from "../components/Register";
-import RegistrationForm from "./RegistrationForm";
+import RegistrationForm from "./SyForm";
 import logo from "../assets/logo.png";
 const CyberSkull = lazy(() => import("../components/CyberSkull"));
 import { Html, useProgress } from "@react-three/drei";
