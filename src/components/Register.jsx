@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useNavigate } from "react-router-dom";
+import SYButton from "./SYButton";
+import TYButton from "./TYButton";
 
 const Register = () => {
   gsap.registerPlugin(ScrollTrigger);
@@ -66,23 +68,30 @@ const Register = () => {
         </p>
 
         <div className="space-y-4">
-          <button
+          <SYButton/>
+          {/* <button
             className="w-full bg-green-500 text-black font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-400 transition-transform transform hover:scale-105 neon-glow"
             onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfVhOkY5lYq-bwk8X7SnrJzF7emW9DgNqGKCDBouUdjILXHBA/viewform?usp=sharing', '_blank')}
           >
             SY Register
-          </button>
+          </button> */}
+          <TYButton/>
 
-          <button
+          {/* <button
             className="w-full bg-green-500 text-black font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-400 transition-transform transform hover:scale-105 neon-glow"
             onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdTiZCA4jIS1uEMRi4BKfjS8Kc0KAx5jUkPv1QNM6CRc-MFCA/viewform?usp=sharing', '_blank')}
           >
             TY Register
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
   );
 };
 
+
+
 export default Register;
+
+
+
