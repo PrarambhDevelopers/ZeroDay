@@ -11,6 +11,11 @@ const FAQ = () => {
                     <p className="text-gray-400 mt-2">You need a laptop with internet access and a curious mind.</p>
                 </details>
                 <details className="bg-[#121212] p-4 rounded-lg shadow-md">
+                    <summary className="cursor-pointer text-lg font-semibold text-[#50ff53]">Will there be a holiday on Rangpanchami?</summary>
+                    <p className="text-gray-400 mt-2">Of course! We know our geeks need a break too. Enjoy Rangpanchami on 19th March—no sessions that day! 🎉 Happy Holi! </p>
+                </details>
+
+                <details className="bg-[#121212] p-4 rounded-lg shadow-md">
                     <summary className="cursor-pointer text-lg font-semibold text-[#50ff53]">Is prior experience required?</summary>
                     <p className="text-gray-400 mt-2">No prior experience is required. All skill levels are welcome.</p>
                 </details>
@@ -26,6 +31,7 @@ const FAQ = () => {
                     <summary className="cursor-pointer text-lg font-semibold text-[#50ff53]">Will there be certificates?</summary>
                     <p className="text-gray-400 mt-2">Yes, participants will receive certificates upon completion.</p>
                 </details>
+
             </div>
         </div>
     </div>

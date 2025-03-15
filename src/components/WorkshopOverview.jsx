@@ -10,12 +10,16 @@ export default function WorkshopOverview() {
             <h2 className="text-5xl font-extrabold text-[#50ff53] tracking-wide drop-shadow-lg">
                 The Gateway to Ethical Hacking & Cybersecurity
             </h2>
-            <p className="mt-4 text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                Step into the world of cybersecurity with <span className="text-[#50ff53] font-bold">ZERO DAY</span> – an immersive workshop designed to unveil the secrets of ethical hacking. 
-                From uncovering vulnerabilities to mastering exploit techniques, get hands-on experience in the cyber realm. Are you ready to think like a hacker?
+            <p className="mt-4 text-xl text-gray-300 max-w-3xl font-bold  mx-auto leading-relaxed text-justify ">
+            Ever wondered how hackers break into systems?</p>
+            <p className="mt-4 text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed text-justify">
+            A <span className="text-[#50ff53] font-bold"> ZERO DAY</span>  is a vulnerability unknown to developers but exploited by hackers. In this workshop, you’ll dive into the world of ethical hacking, learning real-world attack & defense techniques before the bad guys do!
             </p>
-
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-center">
+            <p className="mt-4 text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed text-justify">
+            <span className="text-[#50ff53] font-bold"> ZERO-DAY</span>  is not just a workshop—it’s a battlefield of wits, where you learn to think like a hacker to defend like a pro!
+            </p>
+            
+            <div className="my-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 text-center">
                 {/** Card 1 */}
                 <div className="relative p-8 bg-[#121212]/40 backdrop-blur-md rounded-xl border border-transparent shadow-lg 
                         transition-all duration-500 group hover:scale-110 hover:border-[#50ff53]/80  
@@ -52,6 +56,8 @@ export default function WorkshopOverview() {
                     <h3 className="text-xl font-semibold mt-4 text-gray-200">Participate in Capture The Flag (CTF)</h3>
                 </div>
             </div>
+
+      
         </div>
     );
 }

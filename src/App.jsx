@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingPage from "./pages/LandingPage";
-
+import { Analytics } from "@vercel/analytics/react"
 import Footer from "./components/Footer";
 import TyForm from "./pages/TyForm";
 import SyForm from "./pages/SyForm";
@@ -23,8 +23,10 @@ function App() {
        
         </Routes>
         <Footer />
+        <Analytics/>
       </>
     </Router>
+    
   );
 }
 

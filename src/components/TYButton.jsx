@@ -3,7 +3,7 @@ import "./glitechedButton.css";
 const TYButton = () => {
   return (
     <button
-      class="buttonpro"
+      className="buttonpro"
       onClick={() =>
         window.open(
           "https://docs.google.com/forms/d/e/1FAIpQLSdTiZCA4jIS1uEMRi4BKfjS8Kc0KAx5jUkPv1QNM6CRc-MFCA/viewform?usp=sharing",
