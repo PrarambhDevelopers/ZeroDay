@@ -4,7 +4,7 @@ const FAQ = () => {
   return (
     <div>
         <div className="max-w-4xl mx-auto p-5 flex flex-col justify-center min-h-[100vh]">
-            <h2 className="text-3xl font-bold text-[#50ff53] mb-6">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-center text-[#50ff53] mb-6">Frequently Asked Questions</h2>
             <div className="space-y-4">
                 <details className="bg-[#121212] p-4 rounded-lg shadow-md">
                     <summary className="cursor-pointer text-lg font-semibold text-[#50ff53]">What do I need to participate?</summary>

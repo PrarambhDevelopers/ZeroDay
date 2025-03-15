@@ -6,7 +6,7 @@ import { GiCrosshair } from "react-icons/gi";
 
 export default function WorkshopOverview() {
     return (
-        <div className="flex flex-col md:justify-center items-center min-h-[100vh] bg-black text-white py-20 px-10 text-center">
+        <div className="flex flex-col md:justify-center items-center min-h-[120vh] bg-black text-white py-20 px-10 text-center overflow-x-hidden">
             <h2 className="text-5xl font-extrabold text-[#50ff53] tracking-wide drop-shadow-lg">
                 The Gateway to Ethical Hacking & Cybersecurity
             </h2>

@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import cyberRealm from "./assets/day1.png";
-import pingProbePwn from "./assets/day2.png";
-import injectInfect from "./assets/day3.png";
-import darkInsight from "./assets/day4.png";
+import cyberRealm from "../assets/day1.png";
+import pingProbePwn from "../assets/day2.png";
+import injectInfect from "../assets/day3.png";
+import darkInsight from "../assets/day4.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,9 +74,10 @@ function DayBreakdown() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: () => `+=2500px`,
+          end: () => `+=3000px`,
+          scrub: 2,
+          pinSpacer: false,
           pin: true,
-          scrub: 1,
         },
       });
 
@@ -86,8 +87,9 @@ function DayBreakdown() {
           trigger: section,
           start: "left center",
           end: "+=100px",
-          pin: true,
           pinSpacing: false,
+          pin: true,
+
           scrub: 1,
         });
       });
@@ -97,28 +99,28 @@ function DayBreakdown() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen bg-black text-white overflow-hidden">
-      <h2 className="absolute top-10 left-10 text-3xl font-bold text-[#00ff41]">Day-wise Breakdown</h2>
+    <div ref={containerRef} className="relative w-full min-h-screen bg-black text-white overflow-x-hidden  py-10">
+      <h2 className="text-2xl md:text-5xl text-center font-bold text-[#00ff41]">Day-wise Breakdown</h2>
 
       {/* Horizontal Scroll Container */}
-      <div ref={scrollContainerRef} className="flex w-max">
+      <div ref={scrollContainerRef} className="flex w-max pb-10">
         {days.map((day, index) => (
           <section
             key={index}
-            className="day-section flex-shrink-0 w-screen h-[80vh] flex items-center justify-center p-10"
+            className="day-section flex-shrink-0 w-screen flex flex-col md:flex-row justify-center px-10"
           >
-            {/* Image on the Left */}
-            <div className="w-1/2 flex justify-center">
-              <img src={day.img} alt={day.title} className="w-80 h-80 object-contain" />
+            {/* Image on the Top for Mobile, Left for Desktop */}
+            <div className="w-full md:w-1/2 flex justify-center mb-6 md:mb-0">
+              <img src={day.img} alt={day.title} className="w-28 h-28 md:w-80 md:h-80 object-contain" />
             </div>
 
-            {/* Text on the Right */}
-            <div className="w-1/2 flex flex-col">
-              <h3 className="text-4xl font-bold text-[#00ff41] mb-2">{day.title}</h3>
-              <h4 className="text-2xl font-semibold text-gray-400 mb-4">{day.subtitle}</h4>
-              <ul className="text-lg text-gray-300 space-y-3">
+            {/* Text on the Bottom for Mobile, Right for Desktop */}
+            <div className="w-full md:w-1/2 flex flex-col">
+              <h3 className="text-2xl md:text-4xl font-bold text-[#00ff41] mb-2 text-center md:text-left">{day.title}</h3>
+              <h4 className="text-lg md:text-2xl font-semibold text-gray-400 mb-4 text-center md:text-left">{day.subtitle}</h4>
+              <ul className=" text-md md:text-lg text-gray-300 space-y-3">
                 {day.bullets.map((point, i) => (
-                  <li key={i} className="flex items-start">
+                  <li key={i} className="flex items-start justify-center md:justify-start">
                     <span className="text-[#00ff41] mr-2">🔹</span> {point}
                   </li>
                 ))}
