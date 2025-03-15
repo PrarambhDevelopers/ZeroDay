@@ -45,7 +45,11 @@ const Register = () => {
   }, []);
 
   const navigate = useNavigate();
+  //TY
+//https://docs.google.com/forms/d/e/1FAIpQLSdTiZCA4jIS1uEMRi4BKfjS8Kc0KAx5jUkPv1QNM6CRc-MFCA/viewform?usp=sharing 
 
+//SY
+// https://docs.google.com/forms/d/e/1FAIpQLSfVhOkY5lYq-bwk8X7SnrJzF7emW9DgNqGKCDBouUdjILXHBA/viewform?usp=sharing
   return (
     <div className=" flex flex-col items-center justify-center bg-[#121212] text-white py-10 rounded-lg shadow-lg overflow-x-hidden">
       <div className="marquee-container w-full overflow-hidden mb-24">
@@ -64,14 +68,14 @@ const Register = () => {
         <div className="space-y-4">
           <button
             className="w-full bg-green-500 text-black font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-400 transition-transform transform hover:scale-105 neon-glow"
-            onClick={() => navigate('/syregister')}
+            onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfVhOkY5lYq-bwk8X7SnrJzF7emW9DgNqGKCDBouUdjILXHBA/viewform?usp=sharing', '_blank')}
           >
             SY Register
           </button>
 
           <button
             className="w-full bg-green-500 text-black font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-400 transition-transform transform hover:scale-105 neon-glow"
-            onClick={() => navigate('/tyregister')}
+            onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSdTiZCA4jIS1uEMRi4BKfjS8Kc0KAx5jUkPv1QNM6CRc-MFCA/viewform?usp=sharing', '_blank')}
           >
             TY Register
           </button>
