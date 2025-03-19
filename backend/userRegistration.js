@@ -1,6 +1,7 @@
 const fs = require("fs");
 const User = require("./src/models/User");
 const connectToMongo = require("./src/config/db");
+const { sendWelcomeEmail } = require("./src/utility/emailService");
 connectToMongo();
 
 const generateRandomPassword = () => {
@@ -35,7 +36,7 @@ const registerUser = async (user, index) => {
 
     // Save the user to the database
     await newUser.save();
-
+    await sendWelcomeEmail(email, name, ctf_id, password);
     console.log(
       "User registered successfully! -> ",
       name,
@@ -51,7 +52,6 @@ const registerUser = async (user, index) => {
 
 // Read the JSON file with user data
 fs.readFile("./users.json", "utf8", async (err, data) => {
-
   if (err) {
     console.error("Error reading the file:", err); // Use console.error for file read errors
     return;
