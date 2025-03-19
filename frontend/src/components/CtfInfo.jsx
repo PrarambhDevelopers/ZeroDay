@@ -33,8 +33,8 @@ const CtfInfo = () => {
       {/* Key Details */}
       <div className="flex flex-col relative md:flex-row items-center justify-center gap-6 w-full h-[500px] overflow-hidden text-center text-gray-300 mb-12">
    
-      <p className="text-transparent hidden md:block text-[2rem] md:text-[8rem] absolute top-[-10px] md:top-[-50px] font-bold neon-text" style={{ WebkitTextStroke: '5px #50ff67', lineHeight: '1.2' }}>Win Exciting Prizes!</p>
-      <p className="text-[#50ff53] text-[3rem] md:text-[8rem] absolute top-[-10px] md:top-[-40px] md:left-[135px] font-bold neon-text" style={{ lineHeight: '1.2' }}>Win Exciting Prizes!!</p>
+      <p className="text-transparent hidden md:block text-[2rem] md:text-[8rem] absolute top-[-10px] md:top-[-30px] font-bold neon-text" style={{ WebkitTextStroke: '5px #50ff67', lineHeight: '1.2' }}>Win Exciting Prizes!</p>
+      <p className="text-[#50ff53] text-[3rem] md:text-[8rem] absolute top-[-10px] md:top-[-20px] md:left-[135px] font-bold neon-text" style={{ lineHeight: '1.2' }}>Win Exciting Prizes!!</p>
     
             <div className="flex flex-col items-center p-2 md:p-8 rounded-lg shadow-md">
               <img src={trophy} alt={trophy} className="w-[300px] h-[300px] md:w-[700px] md:h-[700px] z-1 object-contain floating" />

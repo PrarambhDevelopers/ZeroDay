@@ -32,7 +32,7 @@ function Footer() {
           <a href="#" className="hover:text-[#00ff41] transition-transform transform hover:scale-110">
             <FaTwitter className="text-lg" />
           </a>
-          <a href="#" className="hover:text-[#00ff41] transition-transform transform hover:scale-110">
+          <a href="https://www.instagram.com/prarambh_dypcet/" target="_blank" className="hover:text-[#00ff41] transition-transform transform hover:scale-110">
             <FaInstagram className="text-lg" />
           </a>
           <a href="#" className="hover:text-[#00ff41] transition-transform transform hover:scale-110">
