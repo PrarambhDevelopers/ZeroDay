@@ -122,13 +122,13 @@
                                 }`}
                         >
                             <div className="text-xl gap-3 font-bold text-green-400 flex items-center">
-                                {index + 1}
+                                {index}
                                 <img src={warlock.icon} className="w-16 h-16 rounded-full border-2 border-green-500" />
                             </div>
 
                             <div className="text-xl font-semibold text-white">{warlock.name}</div>
                             <div className="text-xl font-semibold text-green-400">{warlock.score}</div>
-                            <div className="text-xl font-semibold text-green-400">{formatTime(warlock.time)}</div>
+                            <div className="text-xl w-[20%] font-semibold text-green-400">{formatTime(warlock.time)}</div>
                         </animated.div>
                     ))}
                 </div>
