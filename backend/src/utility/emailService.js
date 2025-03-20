@@ -12,104 +12,119 @@ const transporter = nodemailer.createTransport({
 const sendWelcomeEmail = async (email, name, ctf_id, password) => {
   try {
     const mailOptions = {
-      from: "prarambhcell.official@gmail.com",
-      to: email,
-      subject: "Welcome to ZeroDay Workshop",
+        from: `"Prarambh Development Cell Official" <prarambhcell.official@gmail.com>`,
+        to: email,
+        subject: "Welcome to ZeroDay Workshop",
       html: `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>
-                body {
-                    font-family: Arial, sans-serif;
-                    margin: 0;
-                    padding: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    background-color: #f4f4f9;
-                }
-                .email-container {
-                    width: 80%;
-                    max-width: 600px; /* You can adjust this value */
-                    padding: 20px;
-                    background-color: #fff;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                }
-                .email-body {
-                    text-align: center;
-                }
-                .banner {
-                    width: 100%;
-                    height: auto;
-                    margin-bottom: 20px;
-                }
-                h1 {
-                    color: #5c2d91;
-                    font-size: 28px;
-                }
-                h2 {
-                    color: #333;
-                    font-size: 24px;
-                }
-                p {
-                    color: #333;
-                    font-size: 16px;
-                    line-height: 1.6;
-                }
-                .credentials {
-                    background-color: #f2f2f2;
-                    padding: 15px;
-                    border-radius: 8px;
-                    font-weight: bold;
-                    margin: 20px 0;
-                }
-                .footer {
-                    margin-top: 30px;
-                    font-size: 14px;
-                    color: #888;
-                }
-                .footer a {
-                    color: #5c2d91;
-                    text-decoration: none;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="email-container">
-                <div class="email-body">
-                    <!-- Banner Image -->
-                    <img src="YOUR_BANNER_LINK_HERE" alt="Event Banner" class="banner">
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .email-container {
+      width: 100%;
+      padding: 40px 0;
+    }
+    .content {
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 8px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .banner {
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+    h1 {
+      color: #00ff41;
+      font-size: 26px;
+      margin-bottom: 10px;
+      font-family: Arial, sans-serif;
+    }
+    p {
+      color: #333333;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 8px 0;
+      font-family: Arial, sans-serif;
+    }
+    .highlight {
+      color: #00ff41;
+      font-weight: bold;
+    }
+    .credentials {
+      background-color: #f2f2f2;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .credentials p {
+      margin: 8px 0;
+      font-weight: bold;
+    }
+    .footer {
+      margin-top: 30px;
+      font-size: 14px;
+      color: #888;
+      font-family: Arial, sans-serif;
+    }
+    .footer img {
+      margin-top: 10px;
+      width: 120px;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f9f9f9">
+    <tr>
+      <td align="center">
+        <div class="email-container">
+          <div class="content">
+            <img src="https://res.cloudinary.com/dan454ywo/image/upload/v1742455127/Zero_mczmqt.png" alt="Zero Day Banner" class="banner" />
 
-                    <h1>Hello ${name}! 🐧</h1>
-                    <p>We are pleased to inform you that we are going to conduct Wargames of MetaMorphosis 2K25 this coming weekend! 🎉</p>
-                    <p>It will be held on 23rd of March, 2025, focusing on Docker & Kubernetes.💜</p>
+            <h1>Hola Cyber Warriors! 🐧</h1>
+            <p>Dear ${name},</p>
+            <p>We are excited to inform you that we are conducting the intense and thrilling <span class="highlight">HackWars CTF</span> as part of the <span class="highlight">ZERO DAY Workshop</span>! 🎯</p>
+            <p>The CTF will be held on <span class="highlight">21st March, 2025</span>, marking the grand finale on the last day of the workshop. It will focus on applying all the concepts related to <span class="highlight">Cyber Security</span> covered throughout the workshop. 🛡️💻</p>
 
-                    <h2>Event Details:</h2>
-                    <p>Date: 21st of March, 2025</p>
-
-                    <h2>The Credentials for the Wargames:</h2>
-                    <div class="credentials">
-                        <p>Ctf_id: <strong>${ctf_id}</strong></p>
-                        <p>Password: <strong>${password}</strong></p>
-                    </div>
-
-                    <p>Please do not hesitate to contact us if you have any queries about the event. We will be happy to assist you in any way we can.</p>
-                    <p>All the best to you!🥳</p>
-                    <p>We look forward to your participation there!</p>
-
-                    <div class="footer">
-                        <p>Thanks and regards,</p>
-                        <p><strong>Prarambh Development Cell, DYPCET</strong></p>
-                    </div>
-                </div>
+            <h2 style="color:#00ff41; margin-top: 25px;">Your Access Credentials:</h2>
+            <div class="credentials">
+              <p>CTF ID: <span class="highlight">${ctf_id}</span></p>
+              <p>Password: <span class="highlight">${password}</span></p>
             </div>
-        </body>
-        </html>
+
+            <p><strong>Note:</strong> Please keep these credentials confidential and do not share them with anyone.</p>
+            <p>For any assistance, feel free to contact us.</p>
+
+            <div class="footer">
+              <p>Regards,</p>
+              <p><strong>Prarambh Development Cell, DYPCET</strong></p>
+              <img src="https://res.cloudinary.com/dan454ywo/image/upload/v1742455386/prarambhlogo_pddqvv.png" alt="Prarambh Logo" />
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+
+
+
+
 
       `,
     };
