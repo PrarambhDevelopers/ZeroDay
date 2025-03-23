@@ -74,8 +74,8 @@ const submitFlag = async (req, res) => {
     // Get the current time in IST
     const currentTime = moment().tz("Asia/Kolkata");
 
-    console.log("Current Time: ", currentTime.format());
-    console.log("Competition Start Time: ", competitionStartTime.format());
+    // console.log("Current Time: ", currentTime.format());
+    // console.log("Competition Start Time: ", competitionStartTime.format());
 
     // Ensure the game has started
     if (currentTime.isBefore(competitionStartTime)) {
@@ -88,7 +88,7 @@ const submitFlag = async (req, res) => {
     }
 
     // Ensure the flag is not submitted multiple times
-    if (user.submitted_flags[level]?.includes(submittedFlag)) {
+    if (user.submitted_flags?.includes(submittedFlag)) {
       return res.status(400).json({ message: "Flag already submitted" });
     }
 
@@ -110,17 +110,17 @@ const submitFlag = async (req, res) => {
     user.last_submission_time[level] = currentTime.toDate();
 
     // Add the flag to the submitted_flags list
-    if (!user.submitted_flags[level]) {
-      user.submitted_flags[level] = [];
+    if (!user.submitted_flags) {
+      user.submitted_flags = [];
     }
-    user.submitted_flags[level].push(submittedFlag);
+    user.submitted_flags.push(submittedFlag);
 
     // Save user data
     await user.save();
 
     res.json({
       message: "Flag submitted successfully",
-      points: flags[level].points,
+      points: user.points,
       timeTaken: timeDifference, // Return time taken in seconds
     });
   } catch (error) {
@@ -150,7 +150,7 @@ const getStageLeaderboard = async (req, res) => {
 // ! @route GET /api/leaderboard/overall
 const getOverallLeaderboard = async (req, res) => {
   try {
-    const users = await User.find({ status: { $ne: "eliminated" } })
+    const users = await User.find()
       .select("ctf_id points time_duration")
       .sort({ "points.total": -1, "time_duration.total": 1 });
 
