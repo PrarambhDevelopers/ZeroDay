@@ -31,7 +31,8 @@ const avatars = [
 ];
 
 export default function Profile() {
-  const { user, setUser } = useAuth(); // Make sure AuthContext provides setUser
+  const { user, updateUser, loading } = useAuth();
+  // Make sure AuthContext provides setUser
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState({
     name: user?.name || '',
@@ -77,11 +78,9 @@ useEffect(() => {
       });
 
       const updatedUser = { ...user, name: profile.name, avatar: profile.avatar };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
-      if (setUser) setUser(updatedUser);
-
+      updateUser(updatedUser); // sync context
       alert("Profile updated successfully!");
-      window.location.reload();
+      
 
     } catch (error) {
       console.error("Failed to update profile", error);
@@ -101,7 +100,8 @@ useEffect(() => {
           <span>Back</span>
         </Link>
       </div>
-
+      {loading && <div className="text-center text-white">Loading...</div>}
+      {!loading && !user && <div className="text-center text-white">Unauthorized</div>}
       {/* Logout Button */}
       <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
         <button onClick={handleLogout} className="flex items-center gap-2 text-red-400 border border-transparent hover:border-red-500 hover:text-red-300 bg-[#121212] hover:bg-[#1f1f1f] px-3 sm:px-4 py-2 rounded-lg shadow-lg active:scale-95 transition text-sm sm:text-base">
@@ -111,7 +111,7 @@ useEffect(() => {
       </div>
 
       <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-[#50FF53]">Edit Profile</h2>
-
+      
       <div className="bg-[#1E1E1E] p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-xs sm:max-w-3xl">
         <div className="mb-4">
           <label className="block text-sm mb-1">Name</label>

@@ -1,28 +1,23 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { FaLock, FaCheckCircle, FaFlag } from "react-icons/fa";
 import { AnimatePresence, motion } from 'framer-motion';
 import gsap from 'gsap';
 import MatrixBG from "../components/MatrixBG";
-import { FaAngleLeft,FaTrophy } from "react-icons/fa";
-import { Link } from 'react-router-dom'; // assuming you're using React Router
-
+import { FaAngleLeft, FaTrophy } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../context/AuthContext'; // Import your context (adjust path)
 
 export default function Submission() {
   const [flagInput, setFlagInput] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'correct' | 'invalid' | 'duplicate'
-  const [unlockedLevels, setUnlockedLevels] = useState(0);
-  const submittedFlags = useRef([]);
   const levelRefs = useRef([]);
-  const confettiTriggered = useRef(false); // To avoid triggering confetti multiple times
+  const confettiTriggered = useRef(false);
+  const TOTAL_LEVELS = 5;
+  // CONTEXT
+  const { user, updateUser } = useAuth();
 
-  // Dummy correct flags
-  const validFlags = [
-    "hackwars{level1}",
-    "hackwars{level2}",
-    "hackwars{level3}",
-    "hackwars{level4}",
-    "hackwars{level5}"
-  ];
+  const unlockedLevels = user?.submitted_flags?.length || 0;
 
   useEffect(() => {
     gsap.from(levelRefs.current, {
@@ -38,7 +33,6 @@ export default function Submission() {
   }, []);
 
   useEffect(() => {
-    // Trigger confetti once when all levels completed
     if (unlockedLevels === 5 && !confettiTriggered.current) {
       confettiTriggered.current = true;
       const script = document.createElement('script');
@@ -55,33 +49,65 @@ export default function Submission() {
         const popup = document.querySelector('.cp-dwp--popup');
         if (popup) {
           popup.style.display = 'none';
-          clearInterval(interval); // Stop checking once hidden
+          clearInterval(interval);
         }
-      }, 500); // Check every 500ms (because it loads dynamically)
-  
-      // Optional timeout fail-safe to stop checking after 10 seconds
+      }, 500);
       setTimeout(() => clearInterval(interval), 10000);
     }
   }, [unlockedLevels]);
-  
 
-  const handleSubmit = (e) => {
+  // === SUBMIT HANDLER ===
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (submittedFlags.current.includes(flagInput)) {
-      setSubmissionStatus("duplicate");
-    } else if (validFlags[unlockedLevels] === flagInput) {
-      submittedFlags.current.push(flagInput);
-      setUnlockedLevels(prev => prev + 1);
-      setSubmissionStatus("correct");
-    } else {
+    if ((user?.submitted_flags?.length || 0) + 1 > TOTAL_LEVELS) {
       setSubmissionStatus("invalid");
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:3000/api/stage/submit-flag', {
+        ctf_id: user.ctf_id,
+        level: `level${(user?.submitted_flags?.length) + 1 || 0}`,
+        submittedFlag: flagInput
+      });
+
+      const resData = response.data;
+
+      if (resData.status === "correct") {
+        setSubmissionStatus("correct");
+
+        // Update user context to reflect new flag submission
+        const updatedUser = {
+          ...user,
+          submitted_flags: [...user.submitted_flags, flagInput],
+          points: (user.points || 0) + resData.points
+        };
+        updateUser(updatedUser);
+
+      } else if (resData.status === "duplicate") {
+        setSubmissionStatus("duplicate");
+      } else if (resData.status === "invalid") {
+        setSubmissionStatus("invalid");
+      }else if (resData.status === "not_started") {
+        setSubmissionStatus("not_started");
+      }
+
+    } catch (error) {
+      console.error('Error submitting flag:', error);
+      setSubmissionStatus("error"); // fallback in case API fails
     }
 
     setFlagInput('');
   };
 
   const renderStatusMessage = () => {
+    if (!submissionStatus) return null;
+
+    setTimeout(() => {
+      setSubmissionStatus(null);
+    }, 5000);
+
     switch (submissionStatus) {
       case "correct":
         return (
@@ -114,6 +140,28 @@ export default function Submission() {
             Already Submitted This Flag!
           </motion.div>
         );
+      case "error":
+        return (
+          <motion.div
+            className="text-red-400 font-bold text-xl mt-4"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200 }}
+          >
+            Error Submitting Flag! Try Again
+          </motion.div>
+        );
+      case "not_started":
+        return (
+          <motion.div
+            className="text-red-400 font-bold text-xl mt-4"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200 }}
+          >
+            Flag Submission has not started yet
+          </motion.div>
+        );
       default:
         return null;
     }
@@ -121,54 +169,52 @@ export default function Submission() {
 
   return (
     <div className="relative flex flex-col items-center justify-center bg-[#0a0a0a]/70 text-white p-10 rounded-lg shadow-2xl min-h-[100vh] overflow-hidden">
-      {/* Matrix Rain Background */}
       <div className="absolute top-0 left-0 w-full h-full -z-10 opacity-70">
         <MatrixBG />
       </div>
 
-      {/* Back to Dashboard Button */}
-            <div className="absolute top-6 left-6 z-20">
-            <Link to="/hackwars_dashboard" className="flex items-center gap-2 text-green-400 border border-transparent  hover:border-green-500 hover:text-green-300 bg-[#121212] hover:bg-[#1f1f1f] px-4 py-2 rounded-lg shadow-lg active:scale-95 transition">
-                <FaAngleLeft className="text-lg" />
-                <span>Back</span>
-            </Link>
-            </div>
+      <div className="absolute top-6 left-6 z-20">
+        <Link to="/hackwars_dashboard" className="flex items-center gap-2 text-green-400 border border-transparent  hover:border-green-500 hover:text-green-300 bg-[#121212] hover:bg-[#1f1f1f] px-4 py-2 rounded-lg shadow-lg active:scale-95 transition">
+          <FaAngleLeft className="text-lg" />
+          <span>Back</span>
+        </Link>
+      </div>
 
-
-            <div className="absolute top-6 right-6 z-20">
-      <Link 
-        to="/leaderboard"
-        className="flex items-center gap-2 bg-[#121212] hover:bg-[#1f1f1f] text-cyan-400 border border-transparent  hover:border-cyan-500 px-4 py-2 rounded-lg shadow-md hover:shadow-cyan-glow transition-all"
-      >
-        <FaTrophy />
-        <span>Leaderboard</span>
-      </Link>
-    </div>
+      <div className="absolute top-6 right-6 z-20">
+        <Link 
+          to="/leaderboard"
+          className="flex items-center gap-2 bg-[#121212] hover:bg-[#1f1f1f] text-cyan-400 border border-transparent  hover:border-cyan-500 px-4 py-2 rounded-lg shadow-md hover:shadow-cyan-glow transition-all"
+        >
+          <FaTrophy />
+          <span>Leaderboard</span>
+        </Link>
+      </div>
 
       <h1 className="text-4xl font-extrabold mb-8 z-10 neon-text text-[#a5ff95]">Drop Your Flag Below, Hacker!</h1>
 
-      <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 z-10">
-        <input
-          type="text"
-          placeholder="Got the flag? Drop it here.."
-          value={flagInput}
-          onChange={(e) => setFlagInput(e.target.value)}
-          className="w-80 p-4 rounded-lg bg-[#121212] text-green-400 font-mono placeholder-green-500 
-                      shadow-inner shadow-green-900 border border-green-500 focus:outline-none focus:ring-2
-                      focus:ring-green-400 focus:border-green-500 transition duration-300 ease-in-out"
-        />
+      {unlockedLevels < TOTAL_LEVELS && (
+        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 z-10">
+          <input
+            type="text"
+            placeholder="Got the flag? Drop it here.."
+            value={flagInput}
+            onChange={(e) => setFlagInput(e.target.value)}
+            className="w-80 p-4 rounded-lg bg-[#121212] text-green-400 font-mono placeholder-green-500 
+                        shadow-inner shadow-green-900 border border-green-500 focus:outline-none focus:ring-2
+                        focus:ring-green-400 focus:border-green-500 transition duration-300 ease-in-out"
+          />
 
-        <button type="submit" className=" buttonpro flex items-center transition-transform hover:scale-105 shadow-lg">
-         <span>Submit Flag</span>
-        </button>
-      </form>
+          <button type="submit" className=" buttonpro flex items-center transition-transform hover:scale-105 shadow-lg">
+            <span>Submit Flag</span>
+          </button>
+        </form>
+      )}
 
       {renderStatusMessage()}
-
       <div className="mt-12 w-full max-w-2xl grid grid-cols-1 gap-4 z-10">
 
         {/* Completed Badge at Top */}
-        {unlockedLevels === 5 && (
+        {unlockedLevels === TOTAL_LEVELS && (
           <motion.div
             className="p-6 bg-gradient-to-r from-yellow-500 to-yellow-300 text-black rounded-lg text-center font-bold text-xl shadow-lg animate-pulse mb-4"
             initial={{ y: -100, scale: 0 }}
@@ -179,7 +225,7 @@ export default function Submission() {
           </motion.div>
         )}
 
-        {validFlags.map((_, idx) => {
+        {[...Array(TOTAL_LEVELS)].map((_, idx) => {
           const isUnlocked = idx < unlockedLevels;
           const isCurrentUnlock = idx === unlockedLevels - 1;
 
@@ -216,6 +262,7 @@ export default function Submission() {
             </AnimatePresence>
           );
         })}
+
       </div>
     </div>
   );
