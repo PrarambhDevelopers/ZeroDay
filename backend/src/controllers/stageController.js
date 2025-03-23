@@ -47,11 +47,12 @@ const addStage = async (req, res) => {
 // Flag submission function
 const submitFlag = async (req, res) => {
   try {
+    
     const { ctf_id, level, submittedFlag } = req.body;
-
-    if (!level || !flags[level]) {
-      return res.status(400).json({ message: "Invalid level provided" });
-    }
+    console.log(req.body);
+    // if (!level || !flags[level]) {
+    //   return res.status(400).json({ message: "Invalid level provided" });
+    // }
 
     // Find the user based on ctf_id
     const user = await User.findOne({ ctf_id });
@@ -65,7 +66,7 @@ const submitFlag = async (req, res) => {
     if (!stage || !stage.start_time) {
       return res
         .status(400)
-        .json({ message: "Competition start time not set" });
+        .json({status:"time_not_set" , message: "Competition start time not set" });
     }
 
     // Convert start time to IST
@@ -79,19 +80,19 @@ const submitFlag = async (req, res) => {
 
     // Ensure the game has started
     if (currentTime.isBefore(competitionStartTime)) {
-      return res.status(400).json({ message: "Game has not started yet" });
+      return res.json({status:"not_started" , message: "Game has not started yet" });
+    }
+    // Ensure the flag is not submitted multiple times
+    if (user.submitted_flags?.includes(submittedFlag)) {
+      return res.json({status:"duplicate" , message: "Flag already submitted" });
     }
 
     // Check if the submitted flag is correct
     if (flags[level].flag !== submittedFlag) {
-      return res.status(400).json({ message: "Incorrect flag" });
+      return res.json({status:"invalid" , message: "Incorrect flag" });
     }
 
-    // Ensure the flag is not submitted multiple times
-    if (user.submitted_flags?.includes(submittedFlag)) {
-      return res.status(400).json({ message: "Flag already submitted" });
-    }
-
+ 
     // Award points
     user.points += flags[level].points;
 
@@ -119,6 +120,7 @@ const submitFlag = async (req, res) => {
     await user.save();
 
     res.json({
+      status: "correct",
       message: "Flag submitted successfully",
       points: user.points,
       timeTaken: timeDifference, // Return time taken in seconds
