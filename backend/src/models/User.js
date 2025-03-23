@@ -18,6 +18,10 @@ const UserSchema = new Schema(
       type: [String],
       default: [],
     },
+    avatar: {
+      type: Number,
+      default: 0,
+    },
     points: {
       type: Number,
       default: 0,
