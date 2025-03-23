@@ -171,11 +171,11 @@ export default function LandingPage() {
       </div>
       {/* <WorkshopOverview /> */}
       {/* <DayBreakdown /> */}
-      <CtfInfo />
+      {/* <CtfInfo /> */}
       {/* <Loader /> */}
       {/* <Register/> */}
       {/* <RegistrationForm/> */}
-      <FAQ />
+      {/* <FAQ /> */}
     </>
   );
 }
