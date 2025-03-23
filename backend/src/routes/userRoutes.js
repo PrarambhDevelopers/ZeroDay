@@ -1,6 +1,7 @@
 const express = require("express");
 const {
   getAllUsers,
+  getUserById,
   registerUser,
   loginUser,
   logoutUser,
@@ -13,7 +14,8 @@ const {
 const router = express.Router();
 
 router.get("/", getAllUsers); // ! Fetch all users
-router.get("/count", getCount); // ! Fetch all users
+router.get("/:id", getUserById)
+router.get("/count", getCount); // ! Fetch count of users
 router.post("/register", registerUser); // ! Register a new user
 router.post("/login", loginUser); // ! Login user
 router.post("/logout", logoutUser); // Logout user .. Useless actually

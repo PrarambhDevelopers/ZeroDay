@@ -69,8 +69,7 @@ const loginUser = async (req, res) => {
     if (!user)
       return res.status(400).json({ message: "Invalid ctf_id or password" });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
+    if (user.password !== password)
       return res.status(400).json({ message: "Invalid ctf_id or password" });
 
     // ? Generate JWT token
@@ -80,7 +79,7 @@ const loginUser = async (req, res) => {
       { expiresIn: "6h" }
     );
 
-    res.json({ message: "Login successful", token });
+    res.json({ message: "Login successful", token, user });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -96,6 +95,20 @@ const logoutUser = async (req, res) => {
   }
 };
 
+// ! @desc Get user by ID
+// ! @route GET /api/users/:id
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findOne({ ctf_id: id });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 // ! @desc Update user details
 // ! @route PUT /api/users/update/:id
 const updateUser = async (req, res) => {
@@ -103,7 +116,9 @@ const updateUser = async (req, res) => {
     const { id } = req.params;
     const updates = req.body;
 
-    const user = await User.findByIdAndUpdate(id, updates, { new: true });
+    const user = await User.findOneAndUpdate({ ctf_id: id }, updates, {
+      new: true,
+    });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     res.json({ message: "User updated successfully", user });
@@ -162,6 +177,7 @@ module.exports = {
   logoutUser,
   updateUser,
   getAllUsers,
+  getUserById,
   getPendingUsers,
   getCount,
   pruneUsers,
