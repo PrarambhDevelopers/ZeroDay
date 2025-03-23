@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { FaAngleLeft, FaSignOutAlt } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import axios from 'axios';
+
+// Avatar Images
 import luffy from '../assets/luffy.jpg';
 import zoro from '../assets/zoro.jpg';
 import nami from '../assets/nami.jpg';
@@ -9,9 +15,8 @@ import robin from '../assets/robin.jpg';
 import franky from '../assets/franky.jpg';
 import brook from '../assets/brook.jpg';
 import jinbe from '../assets/jinbe.jpg';
-import { FaAngleLeft, FaSignOutAlt } from "react-icons/fa";
-import { Link } from 'react-router-dom';
 
+// Avatar Array
 const avatars = [
   { name: 'Luffy', image: luffy },
   { name: 'Zoro', image: zoro },
@@ -26,39 +31,64 @@ const avatars = [
 ];
 
 export default function Profile() {
+  const { user, setUser } = useAuth(); // Make sure AuthContext provides setUser
+  const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState({
-    name: 'Shreesh A Kajave',
-    email: 'harsh2504patil@gmail.com',
-    contact_no: '7030072080',
-    ctf_id: 'Zero_103',
-    avatar: '',
-    theme: 'hacker',
+    name: user?.name || '',
+    email: user?.email || '',
+    contact_no: user?.contact_no || '',
+    ctf_id: user?.ctf_id || '',
+    avatar: user?.avatar || 0,
   });
 
-  const [themes] = useState([
-    { name: 'Hacker Green', color: '#50FF53' },
-    { name: 'Cyber Blue', color: '#00FFFF' },
-    { name: 'Neon Purple', color: '#B10DC9' },
-    { name: 'Matrix Rain', color: '#00FF00' },
-    { name: 'Dark Mode Default', color: '#B0B0B0' },
-  ]);
+  // This will sync profile state when user context changes
+useEffect(() => {
+  if (user) {
+    setProfile({
+      name: user.name || '',
+      email: user.email || '',
+      contact_no: user.contact_no || '',
+      ctf_id: user.ctf_id || '',
+      avatar: user.avatar || 0,
+    });
+  }
+}, [user]);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
-  };
-
-  const handleAvatarSelect = (avatarName) => {
-    setProfile({ ...profile, avatar: avatarName });
-  };
-
-  const handleThemeSelect = (themeName) => {
-    setProfile({ ...profile, theme: themeName });
+  const handleAvatarSelect = (index) => {
+    setProfile({ ...profile, avatar: index });
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user'); // Clear user from localStorage
     window.location.href = '/';
+  };
+
+  const handleInputChange = (e) => {
+    setProfile({ ...profile, name: e.target.value });
+  };
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await axios.put(`http://localhost:3000/api/user/update/${profile.ctf_id}`, {
+        avatar: profile.avatar,
+        name: profile.name,
+      });
+
+      const updatedUser = { ...user, name: profile.name, avatar: profile.avatar };
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      if (setUser) setUser(updatedUser);
+
+      alert("Profile updated successfully!");
+      window.location.reload();
+
+    } catch (error) {
+      console.error("Failed to update profile", error);
+      alert("Failed to update profile.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -66,7 +96,7 @@ export default function Profile() {
 
       {/* Back Button */}
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
-        <Link to="/hackwars_dashboard" className="flex items-center gap-2 text-green-400 border border-transparent  hover:border-green-500 hover:text-green-300 bg-[#121212] hover:bg-[#1f1f1f] px-3 sm:px-4 py-2 rounded-lg shadow-lg active:scale-95 transition text-sm sm:text-base">
+        <Link to="/hackwars_dashboard" className="flex items-center gap-2 text-green-400 border border-transparent hover:border-green-500 hover:text-green-300 bg-[#121212] hover:bg-[#1f1f1f] px-3 sm:px-4 py-2 rounded-lg shadow-lg active:scale-95 transition text-sm sm:text-base">
           <FaAngleLeft className="text-lg" />
           <span>Back</span>
         </Link>
@@ -87,7 +117,6 @@ export default function Profile() {
           <label className="block text-sm mb-1">Name</label>
           <input
             type="text"
-            name="name"
             value={profile.name}
             onChange={handleInputChange}
             className="w-full p-2 rounded bg-[#121212] text-white"
@@ -97,59 +126,46 @@ export default function Profile() {
           <label className="block text-sm mb-1">Email</label>
           <input
             type="email"
-            name="email"
             value={profile.email}
-            onChange={handleInputChange}
-            className="w-full p-2 rounded bg-[#121212] text-white"
+            disabled
+            className="w-full p-2 rounded bg-[#121212] text-white opacity-60 cursor-not-allowed"
           />
         </div>
         <div className="mb-4">
           <label className="block text-sm mb-1">Contact No</label>
           <input
             type="text"
-            name="contact_no"
             value={profile.contact_no}
-            onChange={handleInputChange}
-            className="w-full p-2 rounded bg-[#121212] text-white"
+            disabled
+            className="w-full p-2 rounded bg-[#121212] text-white opacity-60 cursor-not-allowed"
           />
         </div>
 
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-2">Choose Avatar</h3>
           <div className="grid grid-cols-3 sm:grid-cols-5 gap-4">
-            {avatars.map((avatar) => (
+            {avatars.map((avatar, index) => (
               <img
                 key={avatar.name}
                 src={avatar.image}
                 alt={avatar.name}
                 className={`rounded-full w-16 h-16 sm:w-20 sm:h-20 cursor-pointer border-4 ${
-                  profile.avatar === avatar.name ? 'border-[#50FF53]' : 'border-transparent'
+                  profile.avatar == index ? 'border-[#50FF53]' : 'border-transparent'
                 }`}
-                onClick={() => handleAvatarSelect(avatar.name)}
+                onClick={() => {
+                  handleAvatarSelect(index);
+                }}
               />
             ))}
           </div>
         </div>
 
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold mb-2">Choose Theme</h3>
-          <div className="flex flex-wrap gap-4">
-            {themes.map((theme) => (
-              <div
-                key={theme.name}
-                className={`flex items-center justify-center p-2 sm:p-4 rounded-lg cursor-pointer text-center text-xs sm:text-base ${
-                  profile.theme === theme.name ? 'ring-2 ring-[#50FF53]' : 'border border-[#B0B0B0]'
-                }`}
-                style={{ backgroundColor: '#1E1E1E', color: theme.color, minWidth: '100px' }}
-                onClick={() => handleThemeSelect(theme.name)}
-              >
-                {theme.name}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <button className="w-full bg-gradient-to-r from-green-400 to-[#50ff53] text-black font-bold py-2 px-4 rounded-xl transition-all duration-100 active:scale-95 hover:shadow-lg">Save Changes</button>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="w-full bg-gradient-to-r from-green-400 to-[#50ff53] text-black font-bold py-2 px-4 rounded-xl transition-all duration-100 active:scale-95 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed">
+          {saving ? 'Saving...' : 'Save Changes'}
+        </button>
       </div>
     </div>
   );

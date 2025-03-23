@@ -115,6 +115,7 @@ const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+    // console.log("updates", updates);
 
     const user = await User.findOneAndUpdate({ ctf_id: id }, updates, {
       new: true,

@@ -3,22 +3,24 @@ import { FaTrophy, FaFlag, FaUserSecret } from "react-icons/fa";
 import MatrixBG from "../components/MatrixBG";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa"; 
+import { useAuth } from '../context/AuthContext';
 // Sample user object (replace with real data fetching in actual usage)
-const user = {
-  name: "Harshvardhan Patil",
-  ctf_id: "zero_102",
-  contact: "7239102356",
-  email: "harsh2504patil@gmail.com",
-  points: "150",
-  submitted_flags: "5",
-};
+// const user = {
+//   name: "Harshvardhan Patil",
+//   ctf_id: "zero_102",
+//   contact: "7239102356",
+//   email: "harsh2504patil@gmail.com",
+//   points: "150",
+//   submitted_flags: "5",
+// };
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const [greeting, setGreeting] = useState("");
-
+  const { user, token } = useAuth();
   useEffect(() => {
-    const firstName = user.name.split(" ")[0];
+    if (!user) return;
+    const firstName = user?.name.split(" ")[0];
   
     const greetings = [
       `Hola, ${firstName}! Ready to hack?`,
@@ -37,7 +39,7 @@ export default function Dashboard() {
     const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
   
     setGreeting(randomGreeting);
-  }, []);
+  }, [user]);
   
   const handleLogout = () => {
     localStorage.removeItem('token'); // Clear token or session
@@ -64,15 +66,15 @@ export default function Dashboard() {
 
       {/* Dynamic Welcome Message */}
       <h2 className="text-2xl md:text-4xl font-bold mb-2 text-center text-[#a5ff95]">
-            {greeting.split(user.name.split(" ")[0])[0]}
+            {greeting.split(user?.name.split(" ")[0])[0]}
             <span className="bg-gradient-to-r from-green-400 to-[#50ff53] text-transparent bg-clip-text">
-                {user.name.split(" ")[0]}
+                {user?.name.split(" ")[0]}
             </span>
-            {greeting.split(user.name.split(" ")[0])[1]}
-            </h2>
+            {greeting.split(user?.name.split(" ")[0])[1]}
+        </h2>
 
       <p className="text-sm md:text-lg text-gray-400 text-center mb-2">
-        CTF ID: <span className="text-[#50ff53] font-bold">{user.ctf_id}</span>
+        CTF ID: <span className="text-[#50ff53] font-bold">{user?.ctf_id}</span>
       </p>
       <p className="text-lg text-gray-300 text-center max-w-3xl mb-8 neon-text">
         Check your stats, submit flags & climb the leaderboard!
@@ -85,20 +87,20 @@ export default function Dashboard() {
           <p className="text-gray-400 text-sm">Rank</p>
           <span className="text-2xl font-bold text-[#50ff53]">#12</span>
         </div>
-        <div className="h-12 border-l border-gray-600 mx-4 hidden sm:block" />
+        <div className="h-24 border-l border-gray-600 mx-4 hidden sm:block" />
         <div className="flex flex-col items-center mx-6 my-4">
           <FaFlag size={30} className="text-[#50ff53] mb-1" />
           <p className="text-gray-400 text-sm">Flags Submitted</p>
           <span className="text-2xl font-bold text-[#50ff53]">
-            {user.submitted_flags || 0}
+          {user?.submitted_flags?.length || 0}
           </span>
         </div>
-        <div className="h-12 border-l border-gray-600 mx-4 hidden sm:block" />
+        <div className="h-24 border-l border-gray-600 mx-4 hidden sm:block" />
         <div className="flex flex-col items-center mx-6 my-4">
           <FaUserSecret size={30} className="text-[#50ff53] mb-1" />
           <p className="text-gray-400 text-sm">Points</p>
           <span className="text-2xl font-bold text-[#50ff53]">
-            {user.points || 0}
+            {user?.points || 0}
           </span>
         </div>
       </div>
