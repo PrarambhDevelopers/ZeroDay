@@ -193,7 +193,7 @@
                                     <div className="text-sm font-semibold text-white">{warlock.ctf_id}</div>
                                 </div>
                                 <div className="text-xl font-semibold text-green-400">{warlock.score}</div>
-                                {console.log(warlock.time)}
+                                {/* {console.log(warlock.time)} */}
                                 <div className="text-xl w-[35%] flex justify-end font-semibold text-green-400">{formatTime(warlock.time)}</div>
                             </animated.div>
                         ))}
