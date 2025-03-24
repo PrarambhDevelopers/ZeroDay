@@ -23,7 +23,7 @@ function Footer() {
             <span className="text-[#00ff41]">&gt;_</span> "Hack the system, before the system hacks you."
           </p>
         </div>
-
+        
         {/* Social Media Links */}
         <div className="flex gap-4">
           <a href="#" className="hover:text-[#00ff41] transition-transform transform hover:scale-110">
