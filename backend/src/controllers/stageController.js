@@ -105,7 +105,7 @@ const submitFlag = async (req, res) => {
     }
 
     // Add the time difference to the user's total time
-    user.time_duration += timeDifference;
+    user.time_duration = timeDifference;
 
     // Update last submission time
     user.last_submission_time[level] = currentTime.toDate();
