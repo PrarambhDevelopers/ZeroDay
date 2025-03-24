@@ -176,7 +176,7 @@
                                 </div>
                                 <div className="text-xl font-semibold text-green-400">{warlock.score}</div>
                                 {console.log(warlock.time)}
-                                <div className="text-xl w-[35%] font-semibold text-green-400">{formatTime(warlock.time_duration)}</div>
+                                <div className="text-xl w-[35%] font-semibold text-green-400">{formatTime(warlock.time)}</div>
                             </animated.div>
                         ))}
                     </div>
