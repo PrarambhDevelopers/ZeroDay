@@ -203,6 +203,41 @@ export default function Dashboard() {
         </div>
       </div>
 
+       <div className="bg-gray-900 text-green-400 p-6 rounded-xl shadow-lg border border-green-700 mt-8">
+  <h2 className="text-xl font-bold mb-3 flex items-center">
+    🛰️ <span className="ml-2">Intel Drop - Provided by Sentinel AI</span>
+  </h2>
+
+  <div className="mb-4">
+    <p className="text-lg font-semibold mb-2">🎯 Objective:</p>
+    <p className="ml-4 text-green-300">
+      Blume Corporation’s public website is our entry point.<br />
+      First cracks are always on the surface.
+    </p>
+  </div>
+
+  <div className="mb-4">
+    <p className="text-lg font-semibold mb-2">🔍 Hint:</p>
+    <p className="ml-4 text-green-300 italic">
+      "The face they show the world holds careless traces.<br />
+      Explore every corner of their website.<br />
+      No need for tools yet—your eyes are your best weapon."
+    </p>
+  </div>
+
+  <div>
+    <p className="text-lg font-semibold mb-2">🖥️ Target URL:</p>
+    <a 
+      href="https://blume-org.vercel.app/" 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="ml-4 text-blue-400 underline hover:text-blue-500"
+    >
+      🌐 https://blume-org.vercel.app/
+    </a>
+  </div>
+</div>
+
       {/* Motivational Quote */}
       <p className="mt-12 text-gray-400 text-center italic">
         "In the world of code, victory belongs to those who debug relentlessly." 💻🔥
