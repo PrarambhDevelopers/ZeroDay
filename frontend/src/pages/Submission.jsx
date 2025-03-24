@@ -7,7 +7,18 @@ import { FaAngleLeft, FaTrophy } from "react-icons/fa";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext'; // Import your context (adjust path)
+import luffy from '../assets/luffy.jpg';
+import zoro from '../assets/zoro.jpg';
+import nami from '../assets/nami.jpg';
+import usopp from '../assets/usopp.jpg';
+import sanji from '../assets/sanji.jpg';
+import chopper from '../assets/chopper.jpg';
+import robin from '../assets/robin.jpg';
+import franky from '../assets/franky.jpg';
+import brook from '../assets/brook.jpg';
+import jinbe from '../assets/jinbe.jpg';
 
+ const avatarImages = [luffy, zoro, nami, usopp, sanji, chopper, robin, franky, brook, jinbe];
 export default function Submission() {
   const [flagInput, setFlagInput] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'correct' | 'invalid' | 'duplicate'
@@ -179,7 +190,17 @@ export default function Submission() {
           <span>Back</span>
         </Link>
       </div>
-
+      <div className="absolute top-6 z-20 flex items-center gap-2 border border-transparent  hover:border-green-500 hover:text-green-300 bg-[#121212] hover:bg-[#1f1f1f] px-4 py-2 rounded-lg shadow-lg">
+      <img
+        src={avatarImages[user?.avatar]}
+        alt="User Avatar"
+        className="w-8 h-8 rounded-full border-2 border-[#50ff53]"
+      />
+      <div>
+        <p className="text-sm font-bold text-[#50ff53]">{user?.name}</p>
+        {/* <p className="text-sm text-gray-400">{user?.email}</p> */}
+      </div>
+    </div>
       <div className="absolute top-6 right-6 z-20">
         <Link 
           to="/leaderboard"
@@ -190,7 +211,7 @@ export default function Submission() {
         </Link>
       </div>
 
-      <h1 className="text-4xl font-extrabold mb-8 z-10 neon-text text-[#a5ff95]">Drop Your Flag Below, Hacker!</h1>
+      <h1 className="text-4xl font-extrabold mt-12 mb-8 z-10 neon-text text-[#a5ff95]">Drop Your Flag Below, Hacker!</h1>
 
       {unlockedLevels < TOTAL_LEVELS && (
         <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 z-10">
@@ -246,13 +267,13 @@ export default function Submission() {
                   damping: 20,
                   duration: isCurrentUnlock ? 0.8 : 0.4,
                 }}
-                className={`flex justify-between items-center p-4 rounded-lg border transition-all duration-300 ${
+                className={`flex justify-between items-center p-4 rounded-lg border  transition-all duration-300 ${
                   isUnlocked
                     ? 'bg-green-700 border-green-400 shadow-green-glow hover:shadow-lg hover:scale-105'
-                    : 'bg-gray-800 border-gray-600'
+                    : 'bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] rounded-lg shadow-md '
                 }`}
               >
-                <span className="text-lg">Level {idx + 1}</span>
+                <span className="text-lg text-[#50ff53]">Level {idx + 1}</span>
                 {isUnlocked ? (
                   <FaCheckCircle className="text-green-400 text-xl" />
                 ) : (

@@ -5,6 +5,16 @@ import MatrixBG from "../components/MatrixBG";
 import { useNavigate } from "react-router-dom";
 import { FaSignOutAlt } from "react-icons/fa"; 
 import { useAuth } from '../context/AuthContext';
+import luffy from '../assets/luffy.jpg';
+import zoro from '../assets/zoro.jpg';
+import nami from '../assets/nami.jpg';
+import usopp from '../assets/usopp.jpg';
+import sanji from '../assets/sanji.jpg';
+import chopper from '../assets/chopper.jpg';
+import robin from '../assets/robin.jpg';
+import franky from '../assets/franky.jpg';
+import brook from '../assets/brook.jpg';
+import jinbe from '../assets/jinbe.jpg';
 // Sample user object (replace with real data fetching in actual usage)
 // const user = {
 //   name: "Harshvardhan Patil",
@@ -14,7 +24,7 @@ import { useAuth } from '../context/AuthContext';
 //   points: "150",
 //   submitted_flags: "5",
 // };
-
+ const avatarImages = [luffy, zoro, nami, usopp, sanji, chopper, robin, franky, brook, jinbe];
 export default function Dashboard() {
   const navigate = useNavigate();
   const [greeting, setGreeting] = useState("");
@@ -67,20 +77,37 @@ export default function Dashboard() {
         avatar: player.avatar,
       }));
 
-      // Find current player's rank
-      const currentPlayerRankIndex = leaderboardData.findIndex(player => player.ctf_id === currentPlayer.ctf_id);
-      setCurrentPlayerRank(currentPlayerRankIndex + 1); // +1 to convert 0-based index to rank
-      console.log('Current Player Rank:', currentPlayerRankIndex + 1); // +1 to convert 0-based index to rank
+      // Find current player's rank and score
+      const currentPlayerData = leaderboardData.find(player => player.ctf_id === currentPlayer.ctf_id);
+      if (currentPlayerData) {
+        setCurrentPlayerRank(leaderboardData.indexOf(currentPlayerData) + 1); // +1 to convert 0-based index to rank
+        setCurrentPlayerScore(currentPlayerData.score);
+      }
+      console.log('Current Player Rank:', currentPlayerRank);
+      console.log('Current Player Score:', currentPlayerData?.score);
     } catch (err) {
       console.error('Error fetching leaderboard:', err);
     }
   }, [token, currentPlayer.ctf_id]);
-  
+
+  const [currentPlayerScore, setCurrentPlayerScore] = useState(0);
   return (
     <div className="relative flex flex-col items-center justify-center bg-[#121212]/70  text-white p-10 rounded-lg shadow-lg min-h-[100vh] overflow-hidden">
       {/* Matrix Rain Background */}
       <div className="absolute top-0 left-0 w-full h-full -z-10">
         <MatrixBG />
+      </div>
+            {/* User Avatar and Name */}
+       <div className="absolute top-6 left-6 z-20 flex items-center gap-2 border border-transparent  hover:border-green-500 hover:text-green-300 bg-[#121212] hover:bg-[#1f1f1f] px-4 py-2 rounded-lg shadow-lg">
+      <img
+        src={avatarImages[user?.avatar]}
+        alt="User Avatar"
+        className="w-8 h-8 rounded-full border-2 border-[#50ff53]"
+      />
+      <div>
+        <p className="text-sm font-bold text-[#50ff53]">{user?.name}</p>
+        {/* <p className="text-sm text-gray-400">{user?.email}</p> */}
+      </div>
       </div>
       <div className="absolute top-6 right-6 z-20">
         <button
@@ -129,7 +156,7 @@ export default function Dashboard() {
           <FaUserSecret size={30} className="text-[#50ff53] mb-1" />
           <p className="text-gray-400 text-sm">Points</p>
           <span className="text-2xl font-bold text-[#50ff53]">
-            {user?.points || 0}
+            {currentPlayerScore || 0}
           </span>
         </div>
       </div>
@@ -143,7 +170,7 @@ export default function Dashboard() {
           <p className="text-gray-400 text-center mb-4">Track top warriors & stay ahead!</p>
           <button
             onClick={() => navigate("/leaderboard")}
-            className="bg-gradient-to-r from-green-400 to-[#50ff53] duration-100  text-black font-bold py-2 px-4 rounded-xl transition-all active:scale-95 hover:shadow-lg"
+            className="bg-gradient-to-r from-green-400 to-[#50ff53] duration-100  text-black font-bold py-2 px-4 rounded-xl transition-all active:scale-95 hover:shadow-lg cursor-pointer"
           >
             View
           </button>
@@ -156,7 +183,7 @@ export default function Dashboard() {
           <p className="text-gray-400 text-center mb-4">Got the flag? Submit it & earn points!</p>
           <button
             onClick={() => navigate("/flag-submit")}
-            className="bg-gradient-to-r from-green-400 to-[#50ff53] duration-100  text-black font-bold py-2 px-4 rounded-xl transition-all active:scale-95 hover:shadow-lg"
+            className="bg-gradient-to-r from-green-400 to-[#50ff53] duration-100  text-black font-bold py-2 px-4 rounded-xl transition-all active:scale-95 hover:shadow-lg cursor-pointer"
           >
             Submit
           </button>
@@ -169,7 +196,7 @@ export default function Dashboard() {
           <p className="text-gray-400 text-center mb-4">Manage your account & credentials.</p>
           <button
             onClick={() => navigate("/profile")}
-            className="bg-gradient-to-r from-green-400 to-[#50ff53] text-black font-bold py-2 px-4 rounded-xl transition-all duration-100 active:scale-95 hover:shadow-lg"
+            className="bg-gradient-to-r from-green-400 to-[#50ff53] text-black font-bold py-2 px-4 rounded-xl transition-all duration-100 active:scale-95 hover:shadow-lg cursor-pointer"
           >
             Manage
           </button>

@@ -142,13 +142,31 @@
                 {leaderboardVisible && (
                     <button
                         onClick={refreshLeaderboard}
-                        className="mb-6 px-6 py-3 bg-gradient-to-r from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-green-300 border border-green-500/30 hover:bg-[#0d0d0d] rounded-lg shadow-md hover:scale-105 transition-all duration-300"
+                        className="mb-6 px-6 py-3 bg-gradient-to-r from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-green-300 border border-green-500/30 hover:bg-[#0d0d0d] rounded-lg shadow-md hover:scale-105 transition-all duration-300 cursor-pointer"
                     >
                         Refresh
                     </button>
                 )}
+
+                    <div className={` w-xl px-4 my-5 flex items-center justify-between py-2 gap-5 md:gap-8 rounded-lg transition-all duration-500
+                            bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02] `}>
+                                <div className="text-xl  w-[150px] font-semibold text-green-400 flex justify-start  items-center">
+                                Rank
+                            
+                                {/* {console.log(warlock.avatar)} */}
+                            </div>
+                            <div className='w-[70%] flex flex-col items-start justify-start'>
+                                <div className="text-lg font-semibold text-green-400 ">Hacker</div>
+                                {/* <div className="text-sm font-semibold text-white"></div> */}
+                            </div>
+                            <div className="text-xl  w-[30%] font-semibold text-green-400">Points</div>
+                            <div className="text-xl  font-semibold text-green-400">Time Taken</div>
+                            </div>
+                        
+
                 {leaderboardVisible ? (
                     <div className="w-2xl max-w-5xl flex justify-center items-center relative text-xs md:text-2xl" style={{ minHeight: `${sortedWarlocks.length * 120}px` }}>
+                    
                         {transitions((style, warlock, t, index) => (
                             <animated.div
                                 key={warlock.id}
@@ -166,8 +184,8 @@
                                     }`}
                             >
                                 <div className="text-xl gap-3 w-[150px] font-bold text-green-400 flex justify-center items-center">
-                                    {index }
-                                    {console.log(warlock.avatar)}
+                                    #{index }
+                                    {/* {console.log(warlock.avatar)} */}
                                     <img src={avatarImages[warlock.avatar]} className="w-16 h-16 rounded-full border-2 border-green-500" alt="avatar" />
                                 </div>
                                 <div className='w-[70%] flex flex-col items-start justify-center'>
@@ -176,7 +194,7 @@
                                 </div>
                                 <div className="text-xl font-semibold text-green-400">{warlock.score}</div>
                                 {console.log(warlock.time)}
-                                <div className="text-xl w-[35%] font-semibold text-green-400">{formatTime(warlock.time)}</div>
+                                <div className="text-xl w-[35%] flex justify-end font-semibold text-green-400">{formatTime(warlock.time)}</div>
                             </animated.div>
                         ))}
                     </div>
