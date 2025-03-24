@@ -54,7 +54,7 @@ export default function Dashboard() {
   
   const handleLogout = () => {
     localStorage.removeItem('token'); // Clear token or session
-    window.location.href = '/';  // Redirect to login page
+    navigate('/');  // Redirect to login page using useNavigate
   };
 
   const currentPlayer = { ctf_id: user?.ctf_id };

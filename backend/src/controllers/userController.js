@@ -66,6 +66,7 @@ const loginUser = async (req, res) => {
   try {
     const { ctf_id, password } = req.body;
     const user = await User.findOne({ ctf_id });
+    console.log(ctf_id,password)
 
     if (!user)
       return res.status(400).json({ message: "Invalid ctf_id or password" });

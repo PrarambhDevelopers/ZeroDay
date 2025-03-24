@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const { dispatch } = useAuth();
@@ -8,7 +9,7 @@ export default function Login() {
   const [ctfId, setCtfId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -28,7 +29,8 @@ export default function Login() {
         dispatch({ type: 'LOGIN', payload: { user, token } });
 
         // Redirect to Dashboard
-        window.location.href = '/hackwars_dashboard';
+      
+        navigate('/hackwars_dashboard');
       } else {
         setError('Invalid credentials. Please try again!');
       }

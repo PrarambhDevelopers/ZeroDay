@@ -15,7 +15,7 @@ import robin from '../assets/robin.jpg';
 import franky from '../assets/franky.jpg';
 import brook from '../assets/brook.jpg';
 import jinbe from '../assets/jinbe.jpg';
-
+import { useNavigate } from 'react-router-dom';
 // Avatar Array
 const avatars = [
   { name: 'Luffy', image: luffy },
@@ -32,6 +32,8 @@ const avatars = [
 
 export default function Profile() {
   const { user, updateUser, loading } = useAuth();
+  const navigate = useNavigate();
+
   // Make sure AuthContext provides setUser
   const [saving, setSaving] = useState(false);
   const [profile, setProfile] = useState({
@@ -62,7 +64,7 @@ useEffect(() => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user'); // Clear user from localStorage
-    window.location.href = '/';
+    navigate('/');
   };
 
   const handleInputChange = (e) => {
