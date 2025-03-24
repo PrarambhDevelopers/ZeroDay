@@ -242,7 +242,7 @@ export default function Submission() {
             animate={{ y: 0, scale: 1 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
-            🎉 All Levels Completed! You Are A HackWars Champion 🏆
+            🎉 All Levels Completed! Lets see wheter you are HackWars Champion 🏆
           </motion.div>
         )}
 

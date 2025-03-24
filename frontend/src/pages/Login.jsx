@@ -93,9 +93,9 @@ export default function Login() {
         </button>
       </form>
 
-      <p className="mt-6 text-gray-400 text-center text-sm">
+      {/* <p className="mt-6 text-gray-400 text-center text-sm">
         Forgot your password? Reset mission credentials.
-      </p>
+      </p> */}
     </div>
   );
 }
