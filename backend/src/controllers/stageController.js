@@ -22,14 +22,13 @@ const flags = {
   level2: { flag: "ZERO{3de037315f055b119ae5deb6a00a2d6d}", points: 30 },
   level3: { flag: "ZERO{5e947ee90b377e9bf39759bd4cc386fe}", points: 40 },
   level4: { flag: "ZERO{4e47ae392ff40ea12ecebfa26920bdc6}", points: 50 },
-  level5: { flag: "ZERO{d15e8544f4ec6aaf621cd63c12b0c961}", points: 60 },
-  level6: { flag: "ZERO{39389b935c8f8fa9143fa077f5e64da3}", points: 70 },
-  level7: { flag: "ZERO{15928d92f87fcfa91c0d4a054cdd320e}", points: 80 },
-  level8: { flag: "ZERO{e853422664e2a22f815667ae571c55c6}", points: 90 },
-  level9: { flag: "ZERO{3bbeda969efacf1d0ab13e662f9ebdef}", points: 100 },
-  level10: { flag: "ZERO{544be1cb45863c401641db916c3348ed}", points: 110 },
+  level5: { flag: "ZERO{0e4dada5469413ecb76b929a5d3f9b57}", points: 60 },
+  level6: { flag: "ZERO{15928d92f87fcfa91c0d4a054cdd320e}", points: 70 },
+  level7: { flag: "ZERO{e853422664e2a22f815667ae571c55c6}", points: 80 },
+  level8: { flag: "ZERO{27b930652c765dddcf9dae6ffc79d56b}", points: 90 },
+  level9: { flag: "ZERO{544be1cb45863c401641db916c3348ed}", points: 100 },
 };
-
+//640
 // ! @desc Add a new stage
 // ! @route POST /api/stages
 const addStage = async (req, res) => {
