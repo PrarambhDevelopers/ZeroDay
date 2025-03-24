@@ -24,7 +24,7 @@ export default function Submission() {
   const [submissionStatus, setSubmissionStatus] = useState(null); // null | 'correct' | 'invalid' | 'duplicate'
   const levelRefs = useRef([]);
   const confettiTriggered = useRef(false);
-  const TOTAL_LEVELS = 11;
+  const TOTAL_LEVELS = 9;
   // CONTEXT
   const { user, updateUser } = useAuth();
 
