@@ -16,7 +16,7 @@
     import { useAuth } from '../context/AuthContext';
     import axios from 'axios';
     const avatarImages = [luffy, zoro, nami, usopp, sanji, chopper, robin, franky, brook, jinbe];
-    export default function Leaderboard() {
+    export default function AdminLeaderboard() {
         const [leaderboardVisible, setLeaderboardVisible] = useState(true);
         const { token, user } = useAuth();
         const [warlocks, setWarlocks] = useState([]);
@@ -121,7 +121,7 @@
         return () => clearInterval(intervalId); // Cleanup
     }, [fetchLeaderboard]);
 
-        const currentPlayer = { ctf_id: user?.ctf_id};
+        // const currentPlayer = { ctf_id: user?.ctf_id};
 
         return (
             <div className="pt-20 pb-10 min-h-screen flex flex-col items-center bg-[#121212]/80 relative">
@@ -136,19 +136,19 @@
                         <span>Back</span>
                     </Link>
                 </div>
-                {leaderboardVisible && (
+              
                     <h1 className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard</h1>
-                )}
-                {leaderboardVisible && (
+            
+        
                     <button
                         onClick={refreshLeaderboard}
                         className="mb-6 px-6 py-3 bg-gradient-to-r from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-green-300 border border-green-500/30 hover:bg-[#0d0d0d] rounded-lg shadow-md hover:scale-105 transition-all duration-300 cursor-pointer"
                     >
                         Refresh
                     </button>
-                )}
+             
 
-                    <div className={` w-xl px-4 my-5 flex items-center justify-between py-2 gap-5 md:gap-8 rounded-lg transition-all duration-500
+                    <div className={` w-[600px] px-4 my-5 flex items-center justify-between py-2 gap-5 md:gap-8 rounded-lg transition-all duration-500
                             bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02] `}>
                                 <div className="text-xl  w-[150px] font-semibold text-green-400 flex justify-start  items-center">
                                 Rank
@@ -164,8 +164,8 @@
                             </div>
                         
 
-                {leaderboardVisible ? (
-                    <div className="w-[600px] max-w-5xl flex justify-center items-center relative text-xs md:text-2xl" style={{ minHeight: `${sortedWarlocks.length * 120}px` }}>
+        
+                    <div className="w-2xl max-w-5xl flex justify-center items-center relative text-xs md:text-2xl" style={{ minHeight: `${sortedWarlocks.length * 120}px` }}>
                     
                         {transitions((style, warlock, t, index) => (
                             <animated.div
@@ -178,10 +178,7 @@
                                     maxWidth: '800px', // Set a max width for all cards
                                 }}
                                 className={`flex items-center justify-between p-5 gap-5 md:gap-8 rounded-lg transition-all duration-500
-                                bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02] ${warlock.ctf_id === currentPlayer.ctf_id
-                                        ? 'bg-gradient-to-br from-green-700/60 via-[#1a1a1a] to-green-800 border border-green-500/50 shadow-[0_0_20px_green]'
-                                        : 'bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02]'
-                                    }`}
+                                bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02] `}
                             >
                                 <div className="text-xl gap-3 w-[150px] font-bold text-green-400 flex justify-center items-center">
                                     #{index }
@@ -198,9 +195,7 @@
                             </animated.div>
                         ))}
                     </div>
-                ) : (
-                    <div className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard Hidden. Final Results Coming Soon... ⚔️</div>
-                )}
+             
             </div>
         );
     }

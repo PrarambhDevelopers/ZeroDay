@@ -9,6 +9,7 @@ import Submission from "./pages/Submission";
 import Leaderboard from './pages/Leaderboard';
 import Profile from './pages/Profile';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminLeaderboard from "./pages/AdminLeaderboard";
 
 function App() {
   return (
@@ -49,6 +50,12 @@ function App() {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/1eaab48728e501291fe186e2bce9813f" 
+            element={
+                <AdminLeaderboard />
             } 
           />
           

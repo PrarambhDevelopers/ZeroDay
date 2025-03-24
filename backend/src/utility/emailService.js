@@ -92,54 +92,63 @@ const sendWelcomeEmail = async (email, name, ctf_id, password) => {
             }
           </style>
         </head>
-        <body>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f9f9f9">
-            <tr>
-              <td align="center">
-                <div class="email-container">
-                  <div class="content">
-                    <img src="https://res.cloudinary.com/dan454ywo/image/upload/v1742455127/Zero_mczmqt.png" alt="Zero Day Banner" class="banner" />
+          <body>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f9f9f9">
+          <tr>
+            <td align="center">
+              <div class="email-container">
+                <div class="content">
+                  <img src="https://res.cloudinary.com/dan454ywo/image/upload/v1742455127/Zero_mczmqt.png" alt="Zero Day Banner" class="banner" />
 
-                    <h1>Konnichiwa Cyber Warriors! 🐧</h1>
-                    <p>Dear <span class="highlight"><b>${name}</b></span>,</p>
-                    <p>We are excited to inform you that we are conducting the intense and thrilling <span class="highlight">HackWars [CTF]</span> as part of the <span class="highlight">ZERO DAY Workshop</span>! 🎯</p>
-                    <p>The HackWars will be held on <span class="highlight">24th March, 2025</span>, Monday marking the grand finale on the last day of the workshop. It will focus on applying all the concepts related to <span class="highlight">Cyber Security</span> covered throughout the workshop. 🛡️💻</p>
+                  <h1>Konnichiwa Cyber Warrior! 🐧</h1>
+                  <p>Dear <span class="highlight"><b>${name}</b></span>,</p>
+                  
+                  <p>You’ve officially been selected to join the ranks of our underground ethical hacking collective – <span class="highlight">ZeroDay Vanguard</span>. 🎯</p>
+                  
+                  <p>Your mission is clear: <strong>Infiltrate. Expose. Exploit.</strong></p>
+                  
+                  <p>Our first target – <span class="highlight">BLUME Corporation</span>, whose AI-driven ctOS has locked down control over the city. It’s time to break the chains.</p>
 
-                    <h2 style="color:#00ff41; margin-top: 25px;">Your Access Credentials:</h2>
-                    <div class="credentials">
-                      <p>CTF ID: <span class="highlight">${ctf_id}</span></p>
-                      <p>Password: <span class="highlight">${password}</span></p>
-                    </div>
+                  <p><strong>HackWars</strong> begins soon – and you’re on the frontlines.</p>
 
-                    <p><strong>Note:</strong> Please keep these <span class="highlight"> credentials confidential</span>  and <span class="highlight">do not share</span> them with anyone.</p>
-                    <p>For any assistance, feel free to contact us.</p>
+                  <p>Further intel and mission objectives will be revealed shortly.</p>
+                  
+                  <p>For now, your immediate task is to access our secure portal and set up your profile.</p>
+
+                  <h2 style="color:#00ff41; margin-top: 25px;">Your Access Credentials:</h2>
+                  <div class="credentials">
+                    <p>CTF ID: <span class="highlight">${ctf_id}</span></p>
+                    <p>Password: <span class="highlight">${password}</span></p>
+                  </div>
+
+                  <p><strong>Important:</strong> Please keep these <span class="highlight">credentials confidential</span> and <span class="highlight">do not share</span> them with anyone.</p>
+
+                  <p>Our AI Sentinel is monitoring. Stay sharp, stay discreet.</p>
 
                   <div class="footer">
-                          <p>Regards,</p>
-                          <p><strong>Prarambh Development Cell, DYPCET</strong></p>
-                        
-                          <img src="https://res.cloudinary.com/dan454ywo/image/upload/v1742546436/prarambhlogo_zux1cu.png" alt="Prarambh Logo" style="margin-top: 10px; width: 120px; height: auto;" />
-                            <!-- Social Media Handles -->
-              <div >
-                  <a href="https://www.instagram.com/prarambh_dypcet/" target="_blank" style="margin: 0 8px; text-decoration: none;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="vertical-align: middle; width: 30px; height: 30px; max-width: 100%; display: inline-block;" />
-                  </a>
-                  <a href="https://chat.whatsapp.com/BOO3ZVrG8F93uwGAPygifn" target="_blank" style="margin: 0 8px; text-decoration: none;">
-                    <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp" style="vertical-align: middle; width: 30px; height: 30px; max-width: 100%; display: inline-block;" />
-                  </a>
-                </div>
+                    <p>Regards,</p>
+                    <p><strong>Prarambh Development Cell, DYPCET</strong></p>
 
-            
-                          
-                          
+                    <img src="https://res.cloudinary.com/dan454ywo/image/upload/v1742546436/prarambhlogo_zux1cu.png" alt="Prarambh Logo" style="margin-top: 10px; width: 120px; height: auto;" />
+
+                    <!-- Social Media Handles -->
+                    <div>
+                      <a href="https://www.instagram.com/prarambh_dypcet/" target="_blank" style="margin: 0 8px; text-decoration: none;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="vertical-align: middle; width: 30px; height: 30px; max-width: 100%; display: inline-block;" />
+                      </a>
+                      <a href="https://chat.whatsapp.com/BOO3ZVrG8F93uwGAPygifn" target="_blank" style="margin: 0 8px; text-decoration: none;">
+                        <img src="https://cdn-icons-png.flaticon.com/512/220/220236.png" alt="WhatsApp" style="vertical-align: middle; width: 30px; height: 30px; max-width: 100%; display: inline-block;" />
+                      </a>
                     </div>
-
                   </div>
+
                 </div>
-              </td>
-            </tr>
-          </table>
-        </body>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </body>
+
         </html>
 
       `,
