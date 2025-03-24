@@ -8,7 +8,11 @@ const port = process.env.PORT || 5000;
 
 connectToMongo();
 
-app.use(cors({ origin: '*' }));
+app.use(cors({
+  origin: "*",
+  methods: ['GET', 'POST', 'DELETE', 'PUT'], 
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api/user", require("./src/routes/userRoutes"));
