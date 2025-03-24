@@ -100,12 +100,12 @@ const submitFlag = async (req, res) => {
     const timeDifference = currentTime.diff(competitionStartTime, "seconds");
 
     // Ensure time_duration[level] is initialized
-    if (!user.time_duration[level]) {
-      user.time_duration[level] = 0;
+    if (!user.time_duration) {
+      user.time_duration = 0;
     }
 
     // Add the time difference to the user's total time
-    user.time_duration[level] += timeDifference;
+    user.time_duration += timeDifference;
 
     // Update last submission time
     user.last_submission_time[level] = currentTime.toDate();
@@ -123,7 +123,7 @@ const submitFlag = async (req, res) => {
       status: "correct",
       message: "Flag submitted successfully",
       points: user.points,
-      timeTaken: timeDifference, // Return time taken in seconds
+      timeTaken: user.time_duration, // Return time taken in seconds
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
