@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+    import React, { useState, useEffect,useCallback  } from 'react';
+    import axios from 'axios';
 import { FaTrophy, FaFlag, FaUserSecret } from "react-icons/fa";
 import MatrixBG from "../components/MatrixBG";
 import { useNavigate } from "react-router-dom";
@@ -37,7 +38,7 @@ export default function Dashboard() {
     ];
   
     const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-  
+    fetchLeaderboard();
     setGreeting(randomGreeting);
   }, [user]);
   
@@ -45,8 +46,36 @@ export default function Dashboard() {
     localStorage.removeItem('token'); // Clear token or session
     window.location.href = '/';  // Redirect to login page
   };
-  
 
+  const currentPlayer = { ctf_id: user?.ctf_id };
+  const [currentPlayerRank, setCurrentPlayerRank] = useState(1);
+
+  // Reusable leaderboard fetching
+  const fetchLeaderboard = useCallback(async () => {
+    try {
+      // If visible, fetch leaderboard
+      const res = await axios.get('http://localhost:3000/api/stage/leaderboard/overall', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const leaderboardData = res.data.map((player, index) => ({
+        id: player._id,
+        ctf_id: player.ctf_id,
+        name: player.name,
+        score: player.points,
+        time: player.time_duration,
+        avatar: player.avatar,
+      }));
+
+      // Find current player's rank
+      const currentPlayerRankIndex = leaderboardData.findIndex(player => player.ctf_id === currentPlayer.ctf_id);
+      setCurrentPlayerRank(currentPlayerRankIndex + 1); // +1 to convert 0-based index to rank
+      console.log('Current Player Rank:', currentPlayerRankIndex + 1); // +1 to convert 0-based index to rank
+    } catch (err) {
+      console.error('Error fetching leaderboard:', err);
+    }
+  }, [token, currentPlayer.ctf_id]);
+  
   return (
     <div className="relative flex flex-col items-center justify-center bg-[#121212]/70  text-white p-10 rounded-lg shadow-lg min-h-[100vh] overflow-hidden">
       {/* Matrix Rain Background */}
@@ -85,7 +114,7 @@ export default function Dashboard() {
         <div className="flex flex-col items-center mx-6 my-4">
           <FaTrophy size={30} className="text-[#50ff53] mb-1" />
           <p className="text-gray-400 text-sm">Rank</p>
-          <span className="text-2xl font-bold text-[#50ff53]">#12</span>
+          <span className="text-2xl font-bold text-[#50ff53]">#{currentPlayerRank-1}</span>
         </div>
         <div className="h-24 border-l border-gray-600 mx-4 hidden sm:block" />
         <div className="flex flex-col items-center mx-6 my-4">

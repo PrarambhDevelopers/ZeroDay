@@ -54,10 +54,11 @@
 
                 const leaderboardData = res.data.map((player, index) => ({
                     id: player._id,
-                    name: player.ctf_id,
+                    ctf_id: player.ctf_id,
+                    name: player.name,
                     score: player.points,
                     time: player.time_duration,
-                    avatar: (index % avatarImages.length) + 1,
+                    avatar: player.avatar,
                 }));
 
                 setWarlocks(leaderboardData);
@@ -120,7 +121,7 @@
         return () => clearInterval(intervalId); // Cleanup
     }, [fetchLeaderboard]);
 
-        const currentPlayer = { name: user?.ctf_id};
+        const currentPlayer = { ctf_id: user?.ctf_id};
 
         return (
             <div className="pt-20 pb-10 min-h-screen flex flex-col items-center bg-[#121212]/80 relative">
@@ -136,14 +137,8 @@
                     </Link>
                 </div>
                 {leaderboardVisible && (
-                <h1 className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard</h1>
-            )}
-                {/* <button
-                    onClick={randomizeScores}
-                    className="mb-6 px-6 py-3 bg-gradient-to-r from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-green-300 border border-green-500/30 hover:bg-[#0d0d0d] rounded-lg shadow-md hover:scale-105 transition-all duration-300"
-                >
-                    Refresh
-                </button> */}
+                    <h1 className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard</h1>
+                )}
                 {leaderboardVisible && (
                     <button
                         onClick={refreshLeaderboard}
@@ -152,34 +147,39 @@
                         Refresh
                     </button>
                 )}
-{leaderboardVisible ? (
-                <div className="w-xl max-w-5xl flex justify-center items-center relative text-xs md:text-2xl" style={{ minHeight: `${sortedWarlocks.length * 120}px` }}>
-                {transitions((style, warlock, t, index) => (
-                    <animated.div
-                        key={warlock.id}
-                        style={{
-                            ...style,
-                            position: 'absolute',
-                            top: `${index * 120}px`,
-                        }}
-                        className={`flex items-center justify-between p-5 w-[90vw] md:w-auto gap-5 md:gap-20 rounded-lg transition-all duration-500
-                        bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02]    ${warlock.name === currentPlayer.name
-                                    ? 'bg-gradient-to-br from-green-700/60 via-[#1a1a1a] to-green-800 border border-green-500/50 shadow-[0_0_20px_green]'
-                                    : 'bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02]'
-                                }`}
-                    >
-                        <div className="text-xl gap-3 font-bold text-green-400 flex items-center">
-                            {index + 1}
-                            <img src={avatarImages[warlock.avatar - 1]} className="w-16 h-16 rounded-full border-2 border-green-500" alt="avatar" />
-                        </div>
-
-                        <div className="text-xl font-semibold text-white">{warlock.name}</div>
-                        <div className="text-xl font-semibold text-green-400">{warlock.score}</div>
-                        {console.log(warlock.time)}
-                        <div className="text-xl w-[20%] font-semibold text-green-400">{formatTime(warlock.time_duration)}</div>
-                    </animated.div>
-                ))}
-                </div>
+                {leaderboardVisible ? (
+                    <div className="w-2xl max-w-5xl flex justify-center items-center relative text-xs md:text-2xl" style={{ minHeight: `${sortedWarlocks.length * 120}px` }}>
+                        {transitions((style, warlock, t, index) => (
+                            <animated.div
+                                key={warlock.id}
+                                style={{
+                                    ...style,
+                                    position: 'absolute',
+                                    top: `${index * 120}px`,
+                                    width: '90%', // Set the width to 90% for all cards
+                                    maxWidth: '800px', // Set a max width for all cards
+                                }}
+                                className={`flex items-center justify-between p-5 gap-5 md:gap-8 rounded-lg transition-all duration-500
+                                bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02] ${warlock.ctf_id === currentPlayer.ctf_id
+                                        ? 'bg-gradient-to-br from-green-700/60 via-[#1a1a1a] to-green-800 border border-green-500/50 shadow-[0_0_20px_green]'
+                                        : 'bg-gradient-to-br from-[#1a1a1a] via-[#0d0d0d] to-[#1a1a1a] border border-green-500/20 shadow-md hover:scale-[1.02]'
+                                    }`}
+                            >
+                                <div className="text-xl gap-3 w-[150px] font-bold text-green-400 flex justify-center items-center">
+                                    {index }
+                                    {console.log(warlock.avatar)}
+                                    <img src={avatarImages[warlock.avatar]} className="w-16 h-16 rounded-full border-2 border-green-500" alt="avatar" />
+                                </div>
+                                <div className='w-[70%] flex flex-col items-start justify-center'>
+                                    <div className="text-lg font-semibold text-green-400">{warlock.name}</div>
+                                    <div className="text-sm font-semibold text-white">{warlock.ctf_id}</div>
+                                </div>
+                                <div className="text-xl font-semibold text-green-400">{warlock.score}</div>
+                                {console.log(warlock.time)}
+                                <div className="text-xl w-[35%] font-semibold text-green-400">{formatTime(warlock.time_duration)}</div>
+                            </animated.div>
+                        ))}
+                    </div>
                 ) : (
                     <div className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard Hidden. Final Results Coming Soon... ⚔️</div>
                 )}

@@ -153,7 +153,7 @@ const getStageLeaderboard = async (req, res) => {
 const getOverallLeaderboard = async (req, res) => {
   try {
     const users = await User.find()
-      .select("ctf_id points time_duration")
+      .select("name ctf_id points time_duration avatar")
       .sort({ "points.total": -1, "time_duration.total": 1 });
 
     res.json(users);
