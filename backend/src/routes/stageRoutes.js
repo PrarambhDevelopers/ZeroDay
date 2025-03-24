@@ -6,6 +6,8 @@ const {
   getOverallLeaderboard,
   updateUserProgress,
   updateStageStartTime,
+  toggleLeaderboardVisibility,
+  getStageData
 } = require("../controllers/stageController");
 // const { protect } = require("../middleware/authMiddleware");
 
@@ -25,5 +27,6 @@ router.post("/submit-flag", submitFlag); // ? Submit the actual flag (hashed wit
 // Admin routes (Require authentication & admin check)
 router.post("/", addStage); // ! Admin adds a new stage .. No Need
 router.post("/:stage/start-time", updateStageStartTime); // ? Update the start time for a stage
-
+router.put("/toggle-leaderboard-visibility", toggleLeaderboardVisibility); // ? Toggle leaderboard visibility
+router.get("/",getStageData)
 module.exports = router;

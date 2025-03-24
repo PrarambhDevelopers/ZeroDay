@@ -208,6 +208,37 @@ const updateStageStartTime = async (req, res) => {
   }
 };
 
+const toggleLeaderboardVisibility = async (req, res) => {
+  try {
+    const stage = await Stage.findOne();
+    if (!stage) {
+      return res.status(404).json({ message: "Stage not found" });
+    }
+    // Toggle the visibility
+    stage.leaderboard_visible = !stage.leaderboard_visible;
+    await stage.save();
+    res.json({
+      message: "Leaderboard visibility updated successfully",
+      visibility: stage.leaderboard_visible ? "on" : "off",
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+//get stagedata 
+const getStageData = async (req, res) => {
+  try {
+    const stage = await Stage.findOne();
+    if (!stage) {
+      return res.status(404).json({ message: "Stage not found" });
+    }
+    res.json(stage);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
   addStage,
   submitFlag,
@@ -215,4 +246,6 @@ module.exports = {
   getOverallLeaderboard,
   updateUserProgress,
   updateStageStartTime,
+  toggleLeaderboardVisibility,
+  getStageData
 };

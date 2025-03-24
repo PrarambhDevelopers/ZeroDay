@@ -1,4 +1,4 @@
-    import React, { useState, useEffect } from 'react';
+    import React, { useState, useEffect,useCallback  } from 'react';
     import { useTransition, animated } from '@react-spring/web';
     import luffy from '../assets/luffy.jpg';
     import zoro from '../assets/zoro.jpg';
@@ -17,6 +17,7 @@
     import axios from 'axios';
     const avatarImages = [luffy, zoro, nami, usopp, sanji, chopper, robin, franky, brook, jinbe];
     export default function Leaderboard() {
+        const [leaderboardVisible, setLeaderboardVisible] = useState(true);
         const { token, user } = useAuth();
         const [warlocks, setWarlocks] = useState([]);
         const [prevRanks, setPrevRanks] = useState({});
@@ -26,33 +27,48 @@
             const seconds = time % 60;
             return `${minutes}m ${seconds}s`;
         };
+
+        const fetchVisibility = useCallback(async () => {
+            try {
+                const res = await axios.get('http://localhost:3000/api/stage/');
+                setLeaderboardVisible(res.data.leaderboard_visible);
+                console.log('Leaderboard Visible:', res.data.leaderboard_visible);
+            } catch (err) {
+                console.error('Error fetching visibility:', err);
+            }
+        }, []);
+
+
     
-        // 🟢 Fetch leaderboard data
-        useEffect(() => {
-            const fetchLeaderboard = async () => {
-                try {
-                    const res = await axios.get('http://localhost:3000/api/stage/leaderboard/overall', {
-                        headers: { Authorization: `Bearer ${token}` },
-                    });
-                    const leaderboardData = res.data.map((player, index) => ({
-                        id: player._id,
-                        name: player.ctf_id,
-                        score: player.points,
-                        time: player.time_duration,
-                        avatar: (index % avatarImages.length) + 1, // Assign avatar cyclically
-                    }));
-    
-                    setWarlocks(leaderboardData);
-    
-                    // Initial ranks
-                    const ranks = Object.fromEntries(leaderboardData.map((w, i) => [w.id, i]));
-                    setPrevRanks(ranks);
-                } catch (err) {
-                    console.error('Error fetching leaderboard:', err);
-                }
-            };
-            fetchLeaderboard();
-        }, [token]);
+    // Reusable leaderboard fetching
+    const fetchLeaderboard = useCallback(async () => {
+        try {
+            // First check visibility
+            await fetchVisibility();
+
+            // If visible, fetch leaderboard
+            if (leaderboardVisible) {
+                const res = await axios.get('http://localhost:3000/api/stage/leaderboard/overall', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+
+                const leaderboardData = res.data.map((player, index) => ({
+                    id: player._id,
+                    name: player.ctf_id,
+                    score: player.points,
+                    time: player.time_duration,
+                    avatar: (index % avatarImages.length) + 1,
+                }));
+
+                setWarlocks(leaderboardData);
+
+                const ranks = Object.fromEntries(leaderboardData.map((w, i) => [w.id, i]));
+                setPrevRanks(ranks);
+            }
+        } catch (err) {
+            console.error('Error fetching leaderboard:', err);
+        }
+    }, [token, leaderboardVisible, fetchVisibility]);
     
         const sortedWarlocks = [...warlocks].sort((a, b) => {
             if (b.score === a.score) return a.time - b.time;
@@ -88,6 +104,22 @@
         //     );
         // };
 
+           // Manual Refresh Button Handler
+    const refreshLeaderboard = () => {
+        fetchLeaderboard();
+    };
+
+         // Initial fetch + auto interval
+    useEffect(() => {
+        fetchLeaderboard(); // Initial fetch
+
+        const intervalId = setInterval(() => {
+            fetchLeaderboard();
+        }, 15000); // 15 seconds refresh
+
+        return () => clearInterval(intervalId); // Cleanup
+    }, [fetchLeaderboard]);
+
         const currentPlayer = { name: user?.ctf_id};
 
         return (
@@ -103,16 +135,24 @@
                         <span>Back</span>
                     </Link>
                 </div>
-
+                {leaderboardVisible && (
                 <h1 className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard</h1>
-
+            )}
                 {/* <button
                     onClick={randomizeScores}
                     className="mb-6 px-6 py-3 bg-gradient-to-r from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-green-300 border border-green-500/30 hover:bg-[#0d0d0d] rounded-lg shadow-md hover:scale-105 transition-all duration-300"
                 >
                     Refresh
                 </button> */}
-
+                {leaderboardVisible && (
+                    <button
+                        onClick={refreshLeaderboard}
+                        className="mb-6 px-6 py-3 bg-gradient-to-r from-[#0f0f0f] via-[#1a1a1a] to-[#0f0f0f] text-green-300 border border-green-500/30 hover:bg-[#0d0d0d] rounded-lg shadow-md hover:scale-105 transition-all duration-300"
+                    >
+                        Refresh
+                    </button>
+                )}
+{leaderboardVisible ? (
                 <div className="w-xl max-w-5xl flex justify-center items-center relative text-xs md:text-2xl" style={{ minHeight: `${sortedWarlocks.length * 120}px` }}>
                 {transitions((style, warlock, t, index) => (
                     <animated.div
@@ -140,6 +180,9 @@
                     </animated.div>
                 ))}
                 </div>
+                ) : (
+                    <div className="text-4xl font-bold text-green-400 mb-6 drop-shadow-[0_0_10px_green]">Leaderboard Hidden. Final Results Coming Soon... ⚔️</div>
+                )}
             </div>
         );
     }
