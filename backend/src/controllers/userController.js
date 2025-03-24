@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { getOverallLeaderboard } = require("./stageController");
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
@@ -161,6 +162,36 @@ const getCount = async (req, res) => {
   }
 };
 
+// @ desc Get all archived data
+// @ route GET /api/users/archive
+const getArchivedData = async (req, res) => {
+  try {
+    const users = await User.find()
+      .select("name ctf_id points time_duration -_id")
+      .sort({ "points.total": -1, "time_duration.total": 1 });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No users found" });
+    }
+    
+    let archivedData = {
+      count: users.length,
+      users: users,
+      victorious: {},
+      date: new Date(),
+    };
+    
+    let winner = users[0];
+    let runnerUp = users[1];
+    
+    archivedData["victorious"] = { winner, runnerUp };
+    
+    res.json(archivedData);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 // ! @desc Prune all pending users
 // ! @route DELETE /api/users
 const pruneUsers = async (req, res) => {
@@ -179,6 +210,7 @@ module.exports = {
   updateUser,
   getAllUsers,
   getUserById,
+  getArchivedData,
   getPendingUsers,
   getCount,
   pruneUsers,
