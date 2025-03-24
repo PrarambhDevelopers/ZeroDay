@@ -77,7 +77,7 @@ export default function Submission() {
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/api/stage/submit-flag', {
+      const response = await axios.post('https://zeroday-7sa4.onrender.com/api/stage/submit-flag', {
         ctf_id: user.ctf_id,
         level: `level${(user?.submitted_flags?.length) + 1 || 0}`,
         submittedFlag: flagInput

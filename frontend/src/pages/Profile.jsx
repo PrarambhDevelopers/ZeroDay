@@ -74,7 +74,7 @@ useEffect(() => {
   const handleSave = async () => {
     setSaving(true);
     try {
-      const res = await axios.put(`http://localhost:3000/api/user/update/${profile.ctf_id}`, {
+      const res = await axios.put(`https://zeroday-7sa4.onrender.com/api/user/update/${profile.ctf_id}`, {
         avatar: profile.avatar,
         name: profile.name,
       });

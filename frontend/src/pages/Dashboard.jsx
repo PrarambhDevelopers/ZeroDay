@@ -64,7 +64,7 @@ export default function Dashboard() {
   const fetchLeaderboard = useCallback(async () => {
     try {
       // If visible, fetch leaderboard
-      const res = await axios.get('http://localhost:3000/api/stage/leaderboard/overall', {
+      const res = await axios.get('https://zeroday-7sa4.onrender.com/api/stage/leaderboard/overall', {
         headers: { Authorization: `Bearer ${token}` },
       });
 

@@ -30,7 +30,7 @@
 
         const fetchVisibility = useCallback(async () => {
             try {
-                const res = await axios.get('http://localhost:3000/api/stage/');
+                const res = await axios.get('https://zeroday-7sa4.onrender.com/api/stage/');
                 setLeaderboardVisible(res.data.leaderboard_visible);
                 console.log('Leaderboard Visible:', res.data.leaderboard_visible);
             } catch (err) {
@@ -48,7 +48,7 @@
 
             // If visible, fetch leaderboard
             if (leaderboardVisible) {
-                const res = await axios.get('http://localhost:3000/api/stage/leaderboard/overall', {
+                const res = await axios.get('https://zeroday-7sa4.onrender.com/api/stage/leaderboard/overall', {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

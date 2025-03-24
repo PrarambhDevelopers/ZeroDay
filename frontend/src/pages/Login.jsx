@@ -14,7 +14,7 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/api/user/login', {
+      const response = await axios.post('https://zeroday-7sa4.onrender.com/api/user/login', {
         ctf_id: ctfId,
         password: password
       });
