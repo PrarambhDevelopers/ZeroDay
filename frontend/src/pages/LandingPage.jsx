@@ -7,6 +7,7 @@ import { FaRocket, FaSkullCrossbones, FaGamepad, FaLock, FaPlay, FaFlag, FaTermi
 } from "react-icons/fa";
 
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import MatrixBG from "../components/MatrixBG";
 import DayBreakdown from "../components/DayBreakdown";
 import WorkshopOverview from "../components/WorkshopOverview";
@@ -98,16 +99,52 @@ export default function LandingPage() {
   const isMobile = window.innerWidth <= 768;
   const navigate = useNavigate();
 
-
   const [btnContent, setBtnContent] = useState(buttonTexts[0]);
+  const [isNavigating, setIsNavigating] = useState(false);
 
   useEffect(() => {
     const random = Math.floor(Math.random() * buttonTexts.length);
     setBtnContent(buttonTexts[random]);
   }, []);
 
+  // Cleanup function when component unmounts
+  useEffect(() => {
+    return () => {
+      // Kill all ScrollTrigger instances when component unmounts
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      // Clear any GSAP transforms
+      gsap.set("*", { clearProps: "all" });
+    };
+  }, []);
+
+  const handleNavigate = () => {
+    setIsNavigating(true);
+    
+    // Clean up before navigation
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    gsap.set("*", { clearProps: "all" });
+    
+    // Small delay to ensure cleanup completes and smooth transition
+    setTimeout(() => {
+      navigate("/hackwars_login");
+    }, 100);
+  };
+
   return (
     <>
+      {/* Navigation Loading Overlay */}
+      {isNavigating && (
+        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#50ff53] border-r-transparent mb-4"></div>
+            <p className="text-[#50ff53] text-xl font-bold">Entering HackWars...</p>
+          </div>
+          <div className="absolute inset-0 -z-10">
+            <MatrixBG />
+          </div>
+        </div>
+      )}
+      
       <div className="relative text-[--color-neon] h-screen w-full flex justify-center items-center overflow-x-hidden ">
         <h1 className="absolute top-[5%] hidden md:block md:text-[15rem] font-bold tracking-wider  text-neon  ">
           <span
@@ -150,7 +187,7 @@ export default function LandingPage() {
         </Canvas>
         <button
           className="buttonpro absolute bottom-[8%] flex items-center gap-2"
-          onClick={() => navigate("/hackwars_login")}
+          onClick={handleNavigate}
         >
           {btnContent.icon}
           <span>{btnContent.text}</span>
@@ -169,13 +206,13 @@ export default function LandingPage() {
           <MatrixBG />
         </div>
       </div>
-      {/* <WorkshopOverview /> */}
-      {/* <DayBreakdown /> */}
-      {/* <CtfInfo /> */}
+      <WorkshopOverview />
+      <DayBreakdown />
+      <CtfInfo />
       {/* <Loader /> */}
-      {/* <Register/> */}
-      {/* <RegistrationForm/> */}
-      {/* <FAQ /> */}
+      <Register/>
+      <RegistrationForm />
+      <FAQ />
     </>
   );
 }

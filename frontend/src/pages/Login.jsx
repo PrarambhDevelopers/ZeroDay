@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import MatrixBG from "../components/MatrixBG";
 
 export default function Login() {
   const { dispatch } = useAuth();
@@ -9,7 +10,17 @@ export default function Login() {
   const [ctfId, setCtfId] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
+  
+  // Add initial loading to prevent white flash
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 150); // Small delay to ensure smooth transition
+    
+    return () => clearTimeout(timer);
+  }, []);
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -39,6 +50,21 @@ export default function Login() {
       setError('Login failed. Please check your CTF ID and password.');
     }
   };
+
+  // Show loading screen during initial load
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#50ff53] border-r-transparent mb-4"></div>
+          <p className="text-[#50ff53] text-xl font-bold">Loading Login...</p>
+        </div>
+        <div className="absolute inset-0 -z-10">
+          <MatrixBG />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center bg-[#121212] text-white p-10 rounded-lg shadow-lg min-h-[87vh] overflow-hidden">

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import cyberRealm from "../assets/day1.png";
@@ -61,14 +62,44 @@ const days = [
 function DayBreakdown() {
   const containerRef = useRef(null);
   const scrollContainerRef = useRef(null);
+  const location = useLocation();
+  const animationsRef = useRef([]);
+  const isHomeRoute = location.pathname === "/";
+
+  // Immediate cleanup when route changes
+  useLayoutEffect(() => {
+    if (!isHomeRoute) {
+      // Kill all animations immediately
+      animationsRef.current.forEach(anim => anim.kill());
+      animationsRef.current = [];
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      
+      // Force remove any GSAP transforms
+      if (containerRef.current) {
+        gsap.set(containerRef.current, { clearProps: "all" });
+      }
+      if (scrollContainerRef.current) {
+        gsap.set(scrollContainerRef.current, { clearProps: "all" });
+      }
+      gsap.set(".floating", { clearProps: "all" });
+      gsap.set(".day-section", { clearProps: "all" });
+    }
+  }, [isHomeRoute]);
 
   useEffect(() => {
+    // Only initialize GSAP animations if we're on the home page
+    if (!isHomeRoute) {
+      return;
+    }
+
     let ctx = gsap.context(() => {
       const sections = gsap.utils.toArray(".day-section");
-      const totalWidth = scrollContainerRef.current.scrollWidth;
+      const totalWidth = scrollContainerRef.current?.scrollWidth;
+
+      if (!totalWidth) return;
 
       // Smooth horizontal scroll
-      gsap.to(scrollContainerRef.current, {
+      const scrollAnimation = gsap.to(scrollContainerRef.current, {
         x: () => `-${totalWidth - window.innerWidth}px`,
         ease: "none",
         scrollTrigger: {
@@ -80,33 +111,57 @@ function DayBreakdown() {
           pin: true,
         },
       });
+      
+      animationsRef.current.push(scrollAnimation);
 
       // Pin each section momentarily
       sections.forEach((section, index) => {
-        ScrollTrigger.create({
+        const pinTrigger = ScrollTrigger.create({
           trigger: section,
           start: "left center",
           end: "+=100px",
           pinSpacing: false,
           pin: true,
-
           scrub: 1,
         });
+        animationsRef.current.push(pinTrigger);
       });
     });
 
-    return () => ctx.revert();
-  }, []);
+    return () => {
+      // Cleanup GSAP context and ScrollTrigger instances
+      ctx.revert();
+      animationsRef.current.forEach(anim => anim.kill());
+      animationsRef.current = [];
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [isHomeRoute]);
 
   useEffect(() => {
-    gsap.to(".floating", {
-    y: 20,
-    repeat: -1,
-    yoyo: true,
-    ease: "power2.inOut",
-    duration: 2,
+    // Only add floating animation if we're on the home page
+    if (!isHomeRoute) {
+      return;
+    }
+
+    const floatingAnimation = gsap.to(".floating", {
+      y: 20,
+      repeat: -1,
+      yoyo: true,
+      ease: "power2.inOut",
+      duration: 2,
     });
-  }, []);
+
+    animationsRef.current.push(floatingAnimation);
+
+    return () => {
+      floatingAnimation.kill();
+    };
+  }, [isHomeRoute]);
+
+  // Don't render if we're not on the home page
+  if (!isHomeRoute) {
+    return null;
+  }
 
   return (
     <div ref={containerRef} className="relative w-full min-h-screen bg-black text-white overflow-x-hidden  py-10">
@@ -120,7 +175,7 @@ function DayBreakdown() {
             key={index}
             className="day-section flex-shrink-0 w-screen flex flex-col md:flex-row justify-center px-10"
           >
-               <p className="text-transparent hidden md:block text-2xl md:text-8xl font-bold md:flex flex-col items-center " style={{ WebkitTextStroke: '5px #50ff67' }}>
+               <p className="text-transparent hidden md:flex text-2xl md:text-8xl font-bold flex-col items-center " style={{ WebkitTextStroke: '5px #50ff67' }}>
             {`DAY ${index + 1}`.split("").map((char, i) => (
               <span key={i}>{char}</span>
             ))}</p>
